@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="300" viewBox="0 0 1400 300" role="img" aria-labelledby="title desc">
+  <title id="title">Luồng dữ liệu cân</title>
+  <desc id="desc">Dữ liệu đi từ hàng hóa qua load cell, HX711, driver, shelf service, hiệu chỉnh, lọc rồi qua UART tới Raspberry Pi.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+    <style>
+      .title{font:700 24px 'Segoe UI',Arial,sans-serif;fill:#0f172a}
+      .node{stroke:#2563eb;stroke-width:2;rx:12}
+      .physical{fill:#eff6ff}.driver{fill:#ecfeff}.service{fill:#f0fdf4}.output{fill:#fff7ed}
+      .label{font:600 16px 'Segoe UI',Arial,sans-serif;fill:#0f172a;text-anchor:middle}
+      .sub{font:400 13px 'Segoe UI',Arial,sans-serif;fill:#475569;text-anchor:middle}
+      .edge{stroke:#334155;stroke-width:2;fill:none;marker-end:url(#arrow)}
+      .edge-label{font:500 12px 'Segoe UI',Arial,sans-serif;fill:#475569;text-anchor:middle}
+    </style>
+  </defs>
+  <rect width="1400" height="300" fill="#ffffff"/>
+  <text class="title" x="700" y="38" text-anchor="middle">Luồng dữ liệu cân SHELF_1</text>
+
+  <rect class="node physical" x="25" y="112" width="145" height="72"/>
+  <text class="label" x="97" y="142">Hàng hóa</text><text class="sub" x="97" y="166">Lực tác dụng</text>
+  <rect class="node physical" x="205" y="112" width="145" height="72"/>
+  <text class="label" x="277" y="142">Load cell</text><text class="sub" x="277" y="166">Tín hiệu vi sai</text>
+  <rect class="node physical" x="385" y="112" width="145" height="72"/>
+  <text class="label" x="457" y="142">HX711</text><text class="sub" x="457" y="166">ADC 24-bit</text>
+  <rect class="node driver" x="565" y="112" width="145" height="72"/>
+  <text class="label" x="637" y="142">hx711</text><text class="sub" x="637" y="166">Driver SCK/DOUT</text>
+  <rect class="node service" x="745" y="112" width="145" height="72"/>
+  <text class="label" x="817" y="142">shelf_service</text><text class="sub" x="817" y="166">offset / scale</text>
+  <rect class="node service" x="925" y="112" width="145" height="72"/>
+  <text class="label" x="997" y="142">Bộ lọc</text><text class="sub" x="997" y="166">Trung bình 20 mẫu</text>
+  <rect class="node driver" x="1105" y="112" width="120" height="72"/>
+  <text class="label" x="1165" y="142">pi_uart</text><text class="sub" x="1165" y="166">115200 baud</text>
+  <rect class="node output" x="1260" y="112" width="120" height="72"/>
+  <text class="label" x="1320" y="142">Raspberry Pi</text><text class="sub" x="1320" y="166">TOTAL (g)</text>
+
+  <path class="edge" d="M170 148 H198"/><text class="edge-label" x="184" y="104">Lực</text>
+  <path class="edge" d="M350 148 H378"/><text class="edge-label" x="364" y="104">mV/V</text>
+  <path class="edge" d="M530 148 H558"/><text class="edge-label" x="544" y="104">RAW</text>
+  <path class="edge" d="M710 148 H738"/>
+  <path class="edge" d="M890 148 H918"/><text class="edge-label" x="904" y="104">gram</text>
+  <path class="edge" d="M1070 148 H1098"/><text class="edge-label" x="1084" y="104">TOTAL</text>
+  <path class="edge" d="M1225 148 H1253"/>
+
+  <text class="sub" x="700" y="244">weight_g = (raw − offset) / scale</text>
+</svg>

@@ -1,0 +1,27 @@
+{
+    "idf.espIdfPathWin": "D:\\Framework\\esp\\Espressif\\frameworks\\esp-idf-v5.3.1",
+    "idf.toolsPathWin": "D:\\Framework\\esp\\Espressif",
+    "idf.pythonBinPathWin": "D:\\Framework\\esp\\Espressif\\python_env\\idf5.3_py3.11_env\\Scripts\\python.exe",
+    "idf.gitPathWin": "D:\\Framework\\esp\\Espressif\\tools\\idf-git\\2.44.0\\cmd\\git.exe",
+    "terminal.integrated.profiles.windows": {
+        "ESP-IDF Command Prompt": {
+            "path": "C:\\Windows\\System32\\cmd.exe",
+            "args": [
+                "/k",
+                "set IDF_PATH=D:\\Framework\\esp\\Espressif\\frameworks\\esp-idf-v5.3.1&& set IDF_TOOLS_PATH=D:\\Framework\\esp\\Espressif&& set IDF_PYTHON_ENV_PATH=D:\\Framework\\esp\\Espressif\\python_env\\idf5.3_py3.11_env&& call D:\\Framework\\esp\\Espressif\\frameworks\\esp-idf-v5.3.1\\export.bat"
+            ],
+            "icon": "terminal-cmd"
+        },
+        "ESP-IDF PowerShell": {
+            "source": "PowerShell",
+            "args": [
+                "-NoExit",
+                "-Command",
+                "$env:IDF_PATH='D:\\Framework\\esp\\Espressif\\frameworks\\esp-idf-v5.3.1'; $env:IDF_TOOLS_PATH='D:\\Framework\\esp\\Espressif'; $env:IDF_PYTHON_ENV_PATH='D:\\Framework\\esp\\Espressif\\python_env\\idf5.3_py3.11_env'; . 'D:\\Framework\\esp\\Espressif\\frameworks\\esp-idf-v5.3.1\\export.ps1'"
+            ],
+            "icon": "terminal-powershell"
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "ESP-IDF Command Prompt",
+    "idf.currentSetup": "D:\\Framework\\esp\\Espressif\\frameworks\\esp-idf-v5.3.1"
+}

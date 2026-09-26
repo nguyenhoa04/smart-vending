@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
+  <title id="title">State machine cửa và session</title>
+  <desc id="desc">Ba trạng thái idle, waiting for open và active cùng các chuyển trạng thái do UNLOCK, cửa mở, cửa đóng và timeout.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker>
+    <style>
+      .title{font:700 25px 'Segoe UI',Arial,sans-serif;fill:#0f172a}.state{stroke-width:3}.idle{fill:#f8fafc;stroke:#64748b}.waiting{fill:#fff7ed;stroke:#ea580c}.active{fill:#f0fdf4;stroke:#16a34a}
+      .name{font:700 19px 'Segoe UI',Arial,sans-serif;fill:#0f172a;text-anchor:middle}.sub{font:400 14px 'Segoe UI',Arial,sans-serif;fill:#475569;text-anchor:middle}
+      .edge{stroke:#334155;stroke-width:2.5;fill:none;marker-end:url(#arrow)}.edge-label{font:600 14px 'Segoe UI',Arial,sans-serif;fill:#334155;text-anchor:middle}
+      .start{fill:#334155}.note{font:500 13px 'Segoe UI',Arial,sans-serif;fill:#475569;text-anchor:middle}
+    </style>
+  </defs>
+  <rect width="1120" height="560" fill="#ffffff"/>
+  <text class="title" x="560" y="42" text-anchor="middle">State machine cửa và session mua hàng</text>
+  <circle class="start" cx="70" cy="280" r="12"/><path class="edge" d="M82 280 H168"/>
+
+  <rect class="state idle" x="175" y="220" width="210" height="120" rx="60"/>
+  <text class="name" x="280" y="272">idle</text><text class="sub" x="280" y="300">Cửa/khóa ở trạng thái nghỉ</text>
+  <rect class="state waiting" x="455" y="220" width="250" height="120" rx="60"/>
+  <text class="name" x="580" y="272">waiting_for_open</text><text class="sub" x="580" y="300">Relay đã mở</text>
+  <rect class="state active" x="785" y="220" width="210" height="120" rx="60"/>
+  <text class="name" x="890" y="272">active</text><text class="sub" x="890" y="300">Session đang diễn ra</text>
+
+  <path class="edge" d="M385 265 H448"/><text class="edge-label" x="417" y="250">UNLOCK</text>
+  <path class="edge" d="M705 265 H778"/><text class="edge-label" x="741" y="250">Cửa mở</text>
+  <path class="edge" d="M890 340 C890 465 280 465 280 348"/><text class="edge-label" x="585" y="455">Cửa đóng → SESSION: ended</text>
+  <path class="edge" d="M580 220 C580 105 280 105 280 212"/><text class="edge-label" x="430" y="112">Timeout 5 giây, cửa chưa mở</text>
+  <path class="edge" d="M995 280 C1068 280 1068 385 890 385 C815 385 810 350 835 333"/>
+  <text class="edge-label" x="970" y="410">Timeout chỉ đóng relay</text>
+  <text class="note" x="560" y="520">Session active chỉ kết thúc khi MC-38 xác nhận cửa đã đóng.</text>
+</svg>

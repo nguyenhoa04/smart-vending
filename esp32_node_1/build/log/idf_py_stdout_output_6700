@@ -1,0 +1,181 @@
+�Wk���� v3.1[0m
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x12 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7176
+load:0x40078000,len:15564
+ho 0 tail 12 room 4
+load:0x40080400,len:4
+load:0x40080404,len:3904
+entry 0x40080640
+[0;32mI (31) boot: ESP-IDF v5.3.1-2-gb55591ff65-dirty 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Sep  5 2026 14:34:49[0m
+[0;32mI (33) boot: Multicore bootloader[0m
+[0;32mI (37) boot: chip revision: v3.1[0m
+[0;32mI (41) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (46) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (50) boot.esp32: SPI Flash Size : 2MB[0m
+[0;32mI (55) boot: Enabling RNG early entropy source...[0m
+[0;32mI (60) boot: Partition Table:[0m
+[0;32mI (64) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (71) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (78) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (86) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (93) boot: End of partition table[0m
+[0;32mI (98) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=0bc94h ( 48276) map[0m
+[0;32mI (123) esp_image: segment 1: paddr=0001bcbc vaddr=3ffb0000 size=024c4h (  9412) load[0m
+[0;32mI (126) esp_image: segment 2: paddr=0001e188 vaddr=40080000 size=01e90h (  7824) load[0m
+[0;32mI (132) esp_image: segment 3: paddr=00020020 vaddr=400d0020 size=1ce04h (118276) map[0m
+[0;32mI (177) esp_image: segment 4: paddr=0003ce2c vaddr=40081e90 size=0bbf8h ( 48120) load[0m
+[0;32mI (203) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (203) boot: Disabling RNG early entropy source...[0m
+[0;32mI (215) cpu_start: Multicore app[0m
+[0;32mI (224) cpu_start: Pro cpu start user code[0m
+[0;32mI (224) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (224) app_init: Application information:[0m
+[0;32mI (227) app_init: Project name:     esp32_node[0m
+[0;32mI (232) app_init: App version:      v5.3.1-2-gb55591ff65-dirty[0m
+[0;32mI (238) app_init: Compile time:     Sep 16 2026 23:07:42[0m
+[0;32mI (244) app_init: ELF file SHA256:  43af2b2bf...[0m
+[0;32mI (250) app_init: ESP-IDF:          v5.3.1-2-gb55591ff65-dirty[0m
+[0;32mI (256) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (261) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (266) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (271) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (278) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (284) heap_init: At 3FFB2DB8 len 0002D248 (180 KiB): DRAM[0m
+[0;32mI (290) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (297) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (303) heap_init: At 4008DA88 len 00012578 (73 KiB): IRAM[0m
+[0;32mI (311) spi_flash: detected chip: generic[0m
+[0;32mI (314) spi_flash: flash io: dio[0m
+[0;33mW (318) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (332) main_task: Started on CPU0[0m
+[0;32mI (342) main_task: Calling app_main()[0m
+[0;32mI (342) MAIN_APP: System is starting...[0m
+[0;32mI (342) PI_UART: UART initialized successfully.[0m
+[0;32mI (342) gpio: GPIO[25]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (352) gpio: GPIO[34]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (362) HX711: Shared HX711 bus ready: SCK=GPIO25, channels=1[0m
+[0;32mI (372) MAIN_APP: Warming up 1 active HX711 converter(s) for 2 seconds...[0m
+[0;32mI (3162) MAIN_APP: Auto-taring shelf 1 on startup...[0m
+[0;32mI (5082) MAIN_APP: SHELF_1 tare complete | samples=20 | offset_total=-27935 | scale_total=32.000[0m
+[0;32mI (5082) gpio: GPIO[4]| InputEn: 0| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (5082) gpio: GPIO[5]| InputEn: 0| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (5092) DOOR_SESSION: MC-38 ready | GPIO=5 | raw=0 | door=closed | lock=locked | session=idle[0m
+[0;32mI (5102) main_task: Returned from app_main()[0m
+[0;32mI (5172) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: -27950 | OFFSET: -27935[0m
+[0;32mI (6802) MAIN_APP: SHELF_1 -> TOTAL: 8.0 | RAW: -24477 | OFFSET: -27935[0m
+[0;32mI (6892) MAIN_APP: SHELF_1 -> TOTAL: 17.0 | RAW: -22016 | OFFSET: -27935[0m
+[0;32mI (6992) MAIN_APP: SHELF_1 -> TOTAL: 27.0 | RAW: -20718 | OFFSET: -27935[0m
+[0;32mI (7092) MAIN_APP: SHELF_1 -> TOTAL: 228.0 | RAW: -20638 | OFFSET: -27935[0m
+[0;32mI (9292) MAIN_APP: SHELF_1 -> TOTAL: 211.0 | RAW: -21187 | OFFSET: -27935[0m
+[0;32mI (9392) MAIN_APP: SHELF_1 -> TOTAL: 175.0 | RAW: -22324 | OFFSET: -27935[0m
+[0;32mI (9582) MAIN_APP: SHELF_1 -> TOTAL: 146.0 | RAW: -23265 | OFFSET: -27935[0m
+[0;32mI (9682) MAIN_APP: SHELF_1 -> TOTAL: 132.0 | RAW: -23725 | OFFSET: -27935[0m
+[0;32mI (9872) MAIN_APP: SHELF_1 -> TOTAL: 109.0 | RAW: -24452 | OFFSET: -27935[0m
+[0;32mI (9962) MAIN_APP: SHELF_1 -> TOTAL: 60.0 | RAW: -26013 | OFFSET: -27935[0m
+[0;32mI (10062) MAIN_APP: SHELF_1 -> TOTAL: 42.0 | RAW: -26579 | OFFSET: -27935[0m
+[0;32mI (10442) MAIN_APP: SHELF_1 -> TOTAL: 78.0 | RAW: -25426 | OFFSET: -27935[0m
+[0;32mI (10542) MAIN_APP: SHELF_1 -> TOTAL: 120.0 | RAW: -24080 | OFFSET: -27935[0m
+[0;32mI (10642) MAIN_APP: SHELF_1 -> TOTAL: 165.0 | RAW: -22665 | OFFSET: -27935[0m
+[0;32mI (10732) MAIN_APP: SHELF_1 -> TOTAL: 218.0 | RAW: -20967 | OFFSET: -27935[0m
+[0;32mI (11022) MAIN_APP: SHELF_1 -> TOTAL: 228.0 | RAW: -20636 | OFFSET: -27935[0m
+[0;32mI (19182) MAIN_APP: SHELF_1 tare complete | samples=20 | offset_total=-20718 | scale_total=32.000[0m
+[0;32mI (19272) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: -20768 | OFFSET: -20718[0m
+[0;32mI (22582) DOOR_SESSION: MC-38 changed | GPIO=5 | raw=1 | door=open[0m
+[0;32mI (26902) DOOR_SESSION: MC-38 changed | GPIO=5 | raw=0 | door=closed[0m
+[0;32mI (376632) MAIN_APP: SHELF_1 -> TOTAL: -60.0 | RAW: -22630 | OFFSET: -20718[0m
+[0;32mI (376732) MAIN_APP: SHELF_1 -> TOTAL: -179.0 | RAW: -26451 | OFFSET: -20718[0m
+[0;32mI (376822) MAIN_APP: SHELF_1 -> TOTAL: -301.0 | RAW: -30343 | OFFSET: -20718[0m
+[0;32mI (376922) MAIN_APP: SHELF_1 -> TOTAL: -403.0 | RAW: -33620 | OFFSET: -20718[0m
+[0;32mI (377022) MAIN_APP: SHELF_1 -> TOTAL: -503.0 | RAW: -36802 | OFFSET: -20718[0m
+[0;32mI (377112) MAIN_APP: SHELF_1 -> TOTAL: -561.0 | RAW: -38680 | OFFSET: -20718[0m
+[0;32mI (377212) MAIN_APP: SHELF_1 -> TOTAL: -533.0 | RAW: -37771 | OFFSET: -20718[0m
+[0;32mI (377402) MAIN_APP: SHELF_1 -> TOTAL: -427.0 | RAW: -34373 | OFFSET: -20718[0m
+[0;32mI (377502) MAIN_APP: SHELF_1 -> TOTAL: -330.0 | RAW: -31271 | OFFSET: -20718[0m
+[0;32mI (377592) MAIN_APP: SHELF_1 -> TOTAL: -242.0 | RAW: -28476 | OFFSET: -20718[0m
+[0;32mI (377692) MAIN_APP: SHELF_1 -> TOTAL: -228.0 | RAW: -28014 | OFFSET: -20718[0m
+[0;32mI (379132) MAIN_APP: SHELF_1 -> TOTAL: -265.0 | RAW: -29202 | OFFSET: -20718[0m
+[0;32mI (379222) MAIN_APP: SHELF_1 -> TOTAL: -342.0 | RAW: -31655 | OFFSET: -20718[0m
+[0;32mI (379322) MAIN_APP: SHELF_1 -> TOTAL: -318.0 | RAW: -30878 | OFFSET: -20718[0m
+[0;32mI (379412) MAIN_APP: SHELF_1 -> TOTAL: -292.0 | RAW: -30050 | OFFSET: -20718[0m
+[0;32mI (379512) MAIN_APP: SHELF_1 -> TOTAL: -194.0 | RAW: -26915 | OFFSET: -20718[0m
+[0;32mI (379612) MAIN_APP: SHELF_1 -> TOTAL: -72.0 | RAW: -23006 | OFFSET: -20718[0m
+[0;32mI (379702) MAIN_APP: SHELF_1 -> TOTAL: -17.0 | RAW: -21277 | OFFSET: -20718[0m
+[0;32mI (379802) MAIN_APP: SHELF_1 -> TOTAL: -6.0 | RAW: -20900 | OFFSET: -20718[0m
+[0;32mI (379892) MAIN_APP: SHELF_1 -> TOTAL: -16.0 | RAW: -21231 | OFFSET: -20718[0m
+[0;32mI (380092) MAIN_APP: SHELF_1 -> TOTAL: -5.0 | RAW: -20863 | OFFSET: -20718[0m
+[0;32mI (381042) MAIN_APP: SHELF_1 -> TOTAL: -26.0 | RAW: -21560 | OFFSET: -20718[0m
+[0;32mI (381142) MAIN_APP: SHELF_1 -> TOTAL: -54.0 | RAW: -22452 | OFFSET: -20718[0m
+[0;32mI (381332) MAIN_APP: SHELF_1 -> TOTAL: -32.0 | RAW: -21740 | OFFSET: -20718[0m
+[0;32mI (381432) MAIN_APP: SHELF_1 -> TOTAL: -8.0 | RAW: -20983 | OFFSET: -20718[0m
+[0;32mI (385172) MAIN_APP: SHELF_1 -> TOTAL: -84.0 | RAW: -23404 | OFFSET: -20718[0m
+[0;32mI (385272) MAIN_APP: SHELF_1 -> TOTAL: -207.0 | RAW: -27333 | OFFSET: -20718[0m
+[0;32mI (385362) MAIN_APP: SHELF_1 -> TOTAL: -318.0 | RAW: -30908 | OFFSET: -20718[0m
+[0;32mI (385462) MAIN_APP: SHELF_1 -> TOTAL: -339.0 | RAW: -31566 | OFFSET: -20718[0m
+[0;32mI (387182) MAIN_APP: SHELF_1 -> TOTAL: -255.0 | RAW: -28878 | OFFSET: -20718[0m
+[0;32mI (387282) MAIN_APP: SHELF_1 -> TOTAL: -58.0 | RAW: -22562 | OFFSET: -20718[0m
+[0;32mI (387382) MAIN_APP: SHELF_1 -> TOTAL: -4.0 | RAW: -20835 | OFFSET: -20718[0m
+[0;32mI (389872) MAIN_APP: SHELF_1 -> TOTAL: -46.0 | RAW: -22187 | OFFSET: -20718[0m
+[0;32mI (389972) MAIN_APP: SHELF_1 -> TOTAL: -140.0 | RAW: -25189 | OFFSET: -20718[0m
+[0;32mI (390062) MAIN_APP: SHELF_1 -> TOTAL: -270.0 | RAW: -29357 | OFFSET: -20718[0m
+[0;32mI (390162) MAIN_APP: SHELF_1 -> TOTAL: -336.0 | RAW: -31482 | OFFSET: -20718[0m
+[0;32mI (391502) MAIN_APP: SHELF_1 -> TOTAL: -341.0 | RAW: -31700 | OFFSET: -20718[0m
+[0;32mI (401102) MAIN_APP: SHELF_1 calibrated | known=55.0g | raw_avg=-31724 | scale=-200.1091[0m
+[0;32mI (401192) MAIN_APP: SHELF_1 -> TOTAL: 55.0 | RAW: -31766 | OFFSET: -20718[0m
+[0;32mI (401952) MAIN_APP: SHELF_1 -> TOTAL: 51.0 | RAW: -25196 | OFFSET: -20718[0m
+[0;32mI (402052) MAIN_APP: SHELF_1 -> TOTAL: 46.0 | RAW: -21066 | OFFSET: -20718[0m
+[0;32mI (402152) MAIN_APP: SHELF_1 -> TOTAL: 42.0 | RAW: -20859 | OFFSET: -20718[0m
+[0;32mI (402242) MAIN_APP: SHELF_1 -> TOTAL: 39.0 | RAW: -20879 | OFFSET: -20718[0m
+[0;32mI (402342) MAIN_APP: SHELF_1 -> TOTAL: 36.0 | RAW: -20883 | OFFSET: -20718[0m
+[0;32mI (402432) MAIN_APP: SHELF_1 -> TOTAL: 33.0 | RAW: -20896 | OFFSET: -20718[0m
+[0;32mI (402532) MAIN_APP: SHELF_1 -> TOTAL: 31.0 | RAW: -20903 | OFFSET: -20718[0m
+[0;32mI (402632) MAIN_APP: SHELF_1 -> TOTAL: 29.0 | RAW: -20869 | OFFSET: -20718[0m
+[0;32mI (402722) MAIN_APP: SHELF_1 -> TOTAL: 28.0 | RAW: -20889 | OFFSET: -20718[0m
+[0;32mI (402822) MAIN_APP: SHELF_1 -> TOTAL: 26.0 | RAW: -20862 | OFFSET: -20718[0m
+[0;32mI (402912) MAIN_APP: SHELF_1 -> TOTAL: 25.0 | RAW: -20870 | OFFSET: -20718[0m
+[0;32mI (403112) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: -20886 | OFFSET: -20718[0m
+[0;32mI (404932) MAIN_APP: SHELF_1 -> TOTAL: 35.0 | RAW: -27806 | OFFSET: -20718[0m
+[0;32mI (405022) MAIN_APP: SHELF_1 -> TOTAL: 53.0 | RAW: -31328 | OFFSET: -20718[0m
+[0;32mI (406082) MAIN_APP: SHELF_1 -> TOTAL: 36.0 | RAW: -27931 | OFFSET: -20718[0m
+[0;32mI (406172) MAIN_APP: SHELF_1 -> TOTAL: 6.0 | RAW: -21856 | OFFSET: -20718[0m
+[0;32mI (406752) MAIN_APP: SHELF_1 -> TOTAL: 53.0 | RAW: -31226 | OFFSET: -20718[0m
+[0;32mI (406852) MAIN_APP: SHELF_1 -> TOTAL: 86.0 | RAW: -37950 | OFFSET: -20718[0m
+[0;32mI (406942) MAIN_APP: SHELF_1 -> TOTAL: 62.0 | RAW: -33091 | OFFSET: -20718[0m
+[0;32mI (407902) MAIN_APP: SHELF_1 -> TOTAL: 39.0 | RAW: -28527 | OFFSET: -20718[0m
+[0;32mI (408002) MAIN_APP: SHELF_1 -> TOTAL: 7.0 | RAW: -22041 | OFFSET: -20718[0m
+[0;32mI (408672) MAIN_APP: SHELF_1 -> TOTAL: 48.0 | RAW: -30229 | OFFSET: -20718[0m
+[0;32mI (410012) MAIN_APP: SHELF_1 -> TOTAL: 19.0 | RAW: -24611 | OFFSET: -20718[0m
+[0;32mI (410112) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: -21011 | OFFSET: -20718[0m
+[0;32mI (410492) MAIN_APP: SHELF_1 -> TOTAL: 13.0 | RAW: -23221 | OFFSET: -20718[0m
+[0;32mI (410592) MAIN_APP: SHELF_1 -> TOTAL: 47.0 | RAW: -30218 | OFFSET: -20718[0m
+[0;32mI (411642) MAIN_APP: SHELF_1 -> TOTAL: 8.0 | RAW: -22368 | OFFSET: -20718[0m
+[0;32mI (412312) MAIN_APP: SHELF_1 -> TOTAL: 37.0 | RAW: -28067 | OFFSET: -20718[0m
+[0;32mI (412412) MAIN_APP: SHELF_1 -> TOTAL: 59.0 | RAW: -32550 | OFFSET: -20718[0m
+[0;32mI (413082) MAIN_APP: SHELF_1 -> TOTAL: 48.0 | RAW: -30367 | OFFSET: -20718[0m
+[0;32mI (413182) MAIN_APP: SHELF_1 -> TOTAL: 15.0 | RAW: -23698 | OFFSET: -20718[0m
+[0;32mI (413272) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: -20860 | OFFSET: -20718[0m
+[0;32mI (413852) MAIN_APP: SHELF_1 -> TOTAL: 29.0 | RAW: -26542 | OFFSET: -20718[0m
+[0;32mI (413942) MAIN_APP: SHELF_1 -> TOTAL: 54.0 | RAW: -31531 | OFFSET: -20718[0m
+[0;32mI (414522) MAIN_APP: SHELF_1 -> TOTAL: 31.0 | RAW: -26856 | OFFSET: -20718[0m
+[0;32mI (414622) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: -21282 | OFFSET: -20718[0m
+[0;32mI (415002) MAIN_APP: SHELF_1 -> TOTAL: 42.0 | RAW: -29025 | OFFSET: -20718[0m
+[0;32mI (415102) MAIN_APP: SHELF_1 -> TOTAL: 55.0 | RAW: -31636 | OFFSET: -20718[0m
+[0;32mI (415572) MAIN_APP: SHELF_1 -> TOTAL: 29.0 | RAW: -26532 | OFFSET: -20718[0m
+[0;32mI (415672) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: -21236 | OFFSET: -20718[0m
+[0;32mI (415862) MAIN_APP: SHELF_1 -> TOTAL: 14.0 | RAW: -23576 | OFFSET: -20718[0m
+[0;32mI (415962) MAIN_APP: SHELF_1 -> TOTAL: 48.0 | RAW: -30267 | OFFSET: -20718[0m
+[0;32mI (416532) MAIN_APP: SHELF_1 -> TOTAL: 16.0 | RAW: -23850 | OFFSET: -20718[0m
+[0;32mI (416632) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: -20832 | OFFSET: -20718[0m
+[0;32mI (451462) DOOR_SESSION: MC-38 changed | GPIO=5 | raw=1 | door=open[0m
+[0;32mI (454762) DOOR_SESSION: MC-38 changed | GPIO=5 | raw=0 | door=closed[0m
+[0;32mI (457002) DOOR_SESSION: MC-38 changed | GPIO=5 | raw=1 | door=open[0m
+[0;32mI (458042) DOOR_SESSION: MC-38 changed | GPIO=5 | raw=0 | door=closed[0m
+[0;32mI (458342) DOOR_SESSION: MC-38 changed | GPIO=5 | raw=1 | door=open[0m
+[0;32mI (458602) DOOR_SESSION: MC-38 changed | GPIO=5 | raw=0 | door=closed[0m
+[0;32mI (458742) DOOR_SESSION: MC-38 changed | GPIO=5 | raw=1 | door=open[0m
+[0;32mI (459622) DOOR_SESSION: MC-38 changed | GPIO=5 | raw=0 | door=closed[0m

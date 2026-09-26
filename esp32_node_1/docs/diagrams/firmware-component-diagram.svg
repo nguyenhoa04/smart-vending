@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="980" viewBox="0 0 1400 980" role="img" aria-labelledby="title desc">
+  <title id="title">Component diagram ESP32 Node</title>
+  <desc id="desc">Sơ đồ các tầng application, service, driver, ESP-IDF và phần cứng của ESP32 Node.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker>
+    <style>
+      .title{font:700 26px 'Segoe UI',Arial,sans-serif;fill:#0f172a}.layer{fill:#f8fafc;stroke:#94a3b8;stroke-width:2;rx:18}.layer-title{font:700 16px 'Segoe UI',Arial,sans-serif;fill:#475569}
+      .node{stroke-width:2;rx:12}.entry{fill:#f5f3ff;stroke:#7c3aed}.service{fill:#f0fdf4;stroke:#16a34a}.driver{fill:#ecfeff;stroke:#0891b2}.platform{fill:#f8fafc;stroke:#64748b}.hardware{fill:#fff7ed;stroke:#ea580c}
+      .label{font:700 16px 'Segoe UI',Arial,sans-serif;fill:#0f172a;text-anchor:middle}.sub{font:400 13px 'Segoe UI',Arial,sans-serif;fill:#475569;text-anchor:middle}
+      .edge{stroke:#334155;stroke-width:2;fill:none;marker-end:url(#arrow)}.io{stroke:#7c3aed;stroke-width:2;fill:none;marker-start:url(#arrow);marker-end:url(#arrow)}
+      .edge-label{font:500 12px 'Segoe UI',Arial,sans-serif;fill:#475569;text-anchor:middle}
+    </style>
+  </defs>
+  <rect width="1400" height="980" fill="#ffffff"/>
+  <text class="title" x="700" y="40" text-anchor="middle">Component diagram — ESP32 Smart Shelf / Locker Node</text>
+
+  <rect class="layer" x="80" y="65" width="1240" height="120"/><text class="layer-title" x="104" y="92">Application</text>
+  <rect class="node entry" x="365" y="103" width="220" height="58"/><text class="label" x="475" y="128">main</text><text class="sub" x="475" y="148">app_main()</text>
+  <rect class="node entry" x="815" y="103" width="220" height="58"/><text class="label" x="925" y="128">node_app</text><text class="sub" x="925" y="148">Composition root</text>
+  <path class="edge" d="M585 132 H808"/><text class="edge-label" x="696" y="120">node_app_start()</text>
+
+  <rect class="layer" x="80" y="210" width="1240" height="180"/><text class="layer-title" x="104" y="238">Service layer</text>
+  <rect class="node service" x="170" y="275" width="260" height="72"/><text class="label" x="300" y="305">command_service</text><text class="sub" x="300" y="328">Nhận và điều phối lệnh</text>
+  <rect class="node service" x="570" y="275" width="260" height="72"/><text class="label" x="700" y="305">shelf_service</text><text class="sub" x="700" y="328">Cân, lọc, calibration</text>
+  <rect class="node service" x="970" y="275" width="260" height="72"/><text class="label" x="1100" y="305">door_session_service</text><text class="sub" x="1100" y="328">Cửa, khóa, session</text>
+  <path class="edge" d="M925 161 C925 205 300 205 300 268"/><path class="edge" d="M925 161 C925 218 700 218 700 268"/><path class="edge" d="M925 161 C925 218 1100 218 1100 268"/>
+  <path class="edge" d="M430 295 H563"/><text class="edge-label" x="497" y="284">TARE / CALIBRATE</text>
+  <path class="edge" d="M430 330 C650 390 900 390 970 330"/><text class="edge-label" x="700" y="378">UNLOCK / STATUS</text>
+
+  <rect class="layer" x="80" y="415" width="1240" height="175"/><text class="layer-title" x="104" y="443">Driver layer</text>
+  <rect class="node driver" x="210" y="480" width="220" height="72"/><text class="label" x="320" y="510">pi_uart</text><text class="sub" x="320" y="533">UART1 115200</text>
+  <rect class="node driver" x="590" y="480" width="220" height="72"/><text class="label" x="700" y="510">hx711</text><text class="sub" x="700" y="533">ADC, independent SCK</text>
+  <rect class="node driver" x="970" y="480" width="220" height="72"/><text class="label" x="1080" y="510">lock</text><text class="sub" x="1080" y="533">Relay + MC-38 GPIO</text>
+  <path class="edge" d="M300 347 V473"/><path class="edge" d="M700 347 V473"/><path class="edge" d="M1100 347 V473"/>
+  <path class="edge" d="M570 330 C500 360 400 425 350 473"/><path class="edge" d="M970 330 C850 370 520 420 390 473"/>
+
+  <rect class="layer" x="80" y="615" width="1240" height="125"/><text class="layer-title" x="104" y="643">Platform</text>
+  <rect class="node platform" x="310" y="662" width="780" height="52"/><text class="label" x="700" y="694">ESP-IDF · FreeRTOS · GPIO driver · UART driver · Mutex · Timer</text>
+  <path class="edge" d="M320 552 V655"/><path class="edge" d="M700 552 V655"/><path class="edge" d="M1080 552 V655"/>
+
+  <rect class="layer" x="80" y="765" width="1240" height="160"/><text class="layer-title" x="104" y="793">Hardware và thiết bị ngoài</text>
+  <rect class="node hardware" x="130" y="825" width="220" height="64"/><text class="label" x="240" y="853">Raspberry Pi</text><text class="sub" x="240" y="874">Host controller</text>
+  <rect class="node hardware" x="430" y="825" width="240" height="64"/><text class="label" x="550" y="853">HX711 + Load cell</text><text class="sub" x="550" y="874">SHELF_1</text>
+  <rect class="node hardware" x="745" y="825" width="220" height="64"/><text class="label" x="855" y="853">Relay + khóa điện</text><text class="sub" x="855" y="874">GPIO4</text>
+  <rect class="node hardware" x="1040" y="825" width="220" height="64"/><text class="label" x="1150" y="853">MC-38</text><text class="sub" x="1150" y="874">GPIO5</text>
+  <path class="io" d="M320 714 C320 760 240 770 240 818"/><text class="edge-label" x="260" y="770">UART</text>
+  <path class="io" d="M700 714 C700 765 550 770 550 818"/><text class="edge-label" x="605" y="770">SCK / DOUT</text>
+  <path class="edge" d="M1080 714 C1080 760 855 770 855 818"/><path class="edge" d="M1080 714 C1080 760 1150 770 1150 818"/>
+</svg>

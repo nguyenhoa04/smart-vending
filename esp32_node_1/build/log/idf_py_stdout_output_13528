@@ -1,0 +1,116 @@
+[1/110] Linking C static library esp-idf\esp_https_ota\libesp_https_ota.a
+[2/110] Performing build step for 'bootloader'
+[1/1] cmd.exe /C "cd /D D:\Framework\esp\Espressif\frameworks\esp-idf-v5.3.1\examples\get-started\esp32_node_1\build\bootloader\esp-idf\esptool_py && D:\Framework\esp\Espressif\python_env\idf5.3_py3.11_env\Scripts\python.exe D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/bootloader/bootloader.bin"
+Bootloader binary size 0x6880 bytes. 0x780 bytes (7%) free.
+[3/108] Linking C static library esp-idf\esp_http_server\libesp_http_server.a
+[4/108] Linking C static library esp-idf\esp_http_client\libesp_http_client.a
+[5/108] Linking C static library esp-idf\tcp_transport\libtcp_transport.a
+[6/108] Linking C static library esp-idf\esp_gdbstub\libesp_gdbstub.a
+[7/108] Linking C static library esp-idf\esp_eth\libesp_eth.a
+[8/108] Linking C static library esp-idf\esp_adc\libesp_adc.a
+[9/108] Linking C static library esp-idf\esp-tls\libesp-tls.a
+[10/108] Linking C static library esp-idf\http_parser\libhttp_parser.a
+[11/108] Linking C static library esp-idf\esp_wifi\libesp_wifi.a
+[12/108] Linking C static library esp-idf\esp_coex\libesp_coex.a
+[13/108] Linking C static library esp-idf\wpa_supplicant\libwpa_supplicant.a
+[14/108] Linking C static library esp-idf\esp_netif\libesp_netif.a
+[15/108] Linking C static library esp-idf\lwip\liblwip.a
+[16/108] Linking C static library esp-idf\vfs\libvfs.a
+[17/108] Linking C static library esp-idf\esp_vfs_console\libesp_vfs_console.a
+[18/108] Linking C static library esp-idf\esp_phy\libesp_phy.a
+[19/108] Linking C static library esp-idf\driver\libdriver.a
+[20/108] Linking C static library esp-idf\esp_driver_ledc\libesp_driver_ledc.a
+[21/108] Linking C static library esp-idf\esp_driver_i2c\libesp_driver_i2c.a
+[22/108] Linking C static library esp-idf\esp_driver_sdm\libesp_driver_sdm.a
+[23/108] Linking C static library esp-idf\esp_driver_rmt\libesp_driver_rmt.a
+[24/108] Linking C static library esp-idf\esp_driver_dac\libesp_driver_dac.a
+[25/108] Linking C static library esp-idf\esp_driver_sdio\libesp_driver_sdio.a
+[26/108] Linking C static library esp-idf\esp_driver_sdspi\libesp_driver_sdspi.a
+[27/108] Linking C static library esp-idf\esp_driver_sdmmc\libesp_driver_sdmmc.a
+[28/108] Linking C static library esp-idf\sdmmc\libsdmmc.a
+[29/108] Linking C static library esp-idf\esp_driver_i2s\libesp_driver_i2s.a
+[30/108] Linking C static library esp-idf\esp_driver_mcpwm\libesp_driver_mcpwm.a
+[31/108] Linking C static library esp-idf\esp_driver_spi\libesp_driver_spi.a
+[32/108] Linking C static library esp-idf\esp_driver_pcnt\libesp_driver_pcnt.a
+[33/108] Linking C static library esp-idf\nvs_flash\libnvs_flash.a
+[34/108] Linking C static library esp-idf\esp_event\libesp_event.a
+[35/108] Linking C static library esp-idf\esp_driver_uart\libesp_driver_uart.a
+[36/108] Linking C static library esp-idf\esp_ringbuf\libesp_ringbuf.a
+[37/108] Linking C static library esp-idf\esp_driver_gptimer\libesp_driver_gptimer.a
+[38/108] Linking C static library esp-idf\esp_timer\libesp_timer.a
+[39/108] Linking C static library esp-idf\cxx\libcxx.a
+[40/108] Linking C static library esp-idf\pthread\libpthread.a
+[41/108] Linking C static library esp-idf\newlib\libnewlib.a
+[42/108] Linking C static library esp-idf\freertos\libfreertos.a
+[43/108] Linking C static library esp-idf\esp_hw_support\libesp_hw_support.a
+[44/108] Linking C static library esp-idf\soc\libsoc.a
+[45/108] Linking C static library esp-idf\heap\libheap.a
+[46/108] Linking C static library esp-idf\log\liblog.a
+[47/108] Linking C static library esp-idf\hal\libhal.a
+[48/108] Linking C static library esp-idf\esp_rom\libesp_rom.a
+[49/108] Linking C static library esp-idf\esp_common\libesp_common.a
+[50/108] Linking C static library esp-idf\esp_system\libesp_system.a
+[51/108] Linking C static library esp-idf\spi_flash\libspi_flash.a
+[52/108] Linking C static library esp-idf\esp_mm\libesp_mm.a
+[53/108] Linking C static library esp-idf\bootloader_support\libbootloader_support.a
+[54/108] Linking C static library esp-idf\efuse\libefuse.a
+[55/108] Linking C static library esp-idf\esp_partition\libesp_partition.a
+[56/108] Linking C static library esp-idf\app_update\libapp_update.a
+[57/108] Linking C static library esp-idf\esp_bootloader_format\libesp_bootloader_format.a
+[58/108] Linking C static library esp-idf\esp_app_format\libesp_app_format.a
+[59/108] Linking CXX static library esp-idf\mbedtls\mbedtls\library\libmbedtls.a
+[60/108] Linking CXX static library esp-idf\mbedtls\mbedtls\library\libmbedx509.a
+[61/108] Linking CXX static library esp-idf\mbedtls\mbedtls\library\libmbedcrypto.a
+[62/108] Linking CXX static library esp-idf\mbedtls\mbedtls\3rdparty\p256-m\libp256m.a
+[63/108] Linking CXX static library esp-idf\mbedtls\mbedtls\3rdparty\everest\libeverest.a
+[64/108] Generating x509_crt_bundle
+[65/108] Generating ../../x509_crt_bundle.S
+[66/108] Building ASM object esp-idf/mbedtls/CMakeFiles/__idf_mbedtls.dir/__/__/x509_crt_bundle.S.obj
+[67/108] Linking C static library esp-idf\mbedtls\libmbedtls.a
+[68/108] Linking C static library esp-idf\esp_pm\libesp_pm.a
+[69/108] Linking C static library esp-idf\esp_driver_gpio\libesp_driver_gpio.a
+[70/108] Linking C static library esp-idf\xtensa\libxtensa.a
+[71/108] Linking C static library esp-idf\app_trace\libapp_trace.a
+[72/108] Linking C static library esp-idf\espressif__esp_jpeg\libespressif__esp_jpeg.a
+[73/108] Linking C static library esp-idf\esp32-smbus-master\libesp32-smbus-master.a
+[74/108] Linking C static library esp-idf\esp32-smbus\libesp32-smbus.a
+[75/108] Linking C static library esp-idf\unity\libunity.a
+[76/108] Linking C static library esp-idf\protobuf-c\libprotobuf-c.a
+[77/108] Linking C static library esp-idf\esp_driver_cam\libesp_driver_cam.a
+[78/108] Linking C static library esp-idf\esp_https_server\libesp_https_server.a
+[79/108] Linking C static library esp-idf\esp_hid\libesp_hid.a
+[80/108] Linking C static library esp-idf\nvs_sec_provider\libnvs_sec_provider.a
+[81/108] Linking C static library esp-idf\json\libjson.a
+[82/108] Linking C static library esp-idf\mqtt\libmqtt.a
+[83/108] Linking C static library esp-idf\console\libconsole.a
+[84/108] Linking C static library esp-idf\perfmon\libperfmon.a
+[85/108] Linking C static library esp-idf\wear_levelling\libwear_levelling.a
+[86/108] Linking C static library esp-idf\esp_lcd\libesp_lcd.a
+[87/108] Linking C static library esp-idf\espcoredump\libespcoredump.a
+[88/108] Linking C static library esp-idf\lock\liblock.a
+[89/108] Linking C static library esp-idf\spiffs\libspiffs.a
+[90/108] Linking C static library esp-idf\pi_uart\libpi_uart.a
+[91/108] Linking C static library esp-idf\esp32-i2c-lcd1602-master\libesp32-i2c-lcd1602-master.a
+[92/108] Linking C static library esp-idf\cmock\libcmock.a
+[93/108] Linking C static library esp-idf\hx711\libhx711.a
+[94/108] Linking C static library esp-idf\door_session_service\libdoor_session_service.a
+[95/108] Linking C static library esp-idf\shelf_service\libshelf_service.a
+[96/108] Linking C static library esp-idf\fatfs\libfatfs.a
+[97/108] Linking C static library esp-idf\protocomm\libprotocomm.a
+[98/108] Linking C static library esp-idf\esp32-camera\libesp32-camera.a
+[99/108] Linking C static library esp-idf\command_service\libcommand_service.a
+[100/108] Linking C static library esp-idf\esp_local_ctrl\libesp_local_ctrl.a
+[101/108] Linking C static library esp-idf\node_app\libnode_app.a
+[102/108] Linking C static library esp-idf\wifi_provisioning\libwifi_provisioning.a
+[103/108] Linking C static library esp-idf\main\libmain.a
+[104/108] Generating ld/sections.ld
+[105/108] Building C object CMakeFiles/esp32_node.elf.dir/project_elf_src_esp32.c.obj
+[106/108] Linking CXX executable esp32_node.elf
+[107/108] Generating binary image from built executable
+esptool.py v4.8.dev5
+Creating esp32 image...
+Merged 2 ELF sections
+Successfully created esp32 image.
+Generated D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/esp32_node.bin
+[108/108] cmd.exe /C "cd /D D:\Framework\esp\Espressif\frameworks\esp-idf-v5.3.1\examples\get-started\esp32_node_1\build\esp-idf\esptool_py && D:\Framework\esp\Espressif\python_env\idf5.3_py3.11_env\Scripts\python.exe D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/components/partition_table/check_sizes.py --offset 0x8000 partition --type app D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/partition_table/partition-table.bin D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/esp32_node.bin"
+esp32_node.bin binary size 0x389a0 bytes. Smallest app partition is 0x100000 bytes. 0xc7660 bytes (78%) free.

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1380" height="900" viewBox="0 0 1380 900" role="img" aria-labelledby="title desc">
+  <title id="title">Trình tự session mua hàng</title>
+  <desc id="desc">Raspberry Pi gửi UNLOCK, ESP32 mở khóa, bắt đầu session khi cửa mở và kết thúc khi cửa đóng.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker>
+    <style>
+      .title{font:700 25px 'Segoe UI',Arial,sans-serif;fill:#0f172a}.head{fill:#eff6ff;stroke:#2563eb;stroke-width:2;rx:10}
+      .label{font:600 15px 'Segoe UI',Arial,sans-serif;fill:#0f172a;text-anchor:middle}.life{stroke:#94a3b8;stroke-width:2;stroke-dasharray:7 6}
+      .msg{stroke:#334155;stroke-width:2;fill:none;marker-end:url(#arrow)}.event{stroke:#7c3aed;stroke-width:2;fill:none;stroke-dasharray:6 4;marker-end:url(#arrow)}
+      .text{font:500 14px 'Segoe UI',Arial,sans-serif;fill:#334155;text-anchor:middle}.note{fill:#fefce8;stroke:#ca8a04;stroke-width:1.5;rx:8}.note-text{font:600 13px 'Segoe UI',Arial,sans-serif;fill:#713f12;text-anchor:middle}
+      .phase{fill:#f0fdf4;stroke:#16a34a;stroke-width:1.5;rx:14}.phase-text{font:600 13px 'Segoe UI',Arial,sans-serif;fill:#166534;text-anchor:middle}
+    </style>
+  </defs>
+  <rect width="1380" height="900" fill="#ffffff"/>
+  <text class="title" x="690" y="38" text-anchor="middle">Trình tự một session mua hàng</text>
+
+  <g><rect class="head" x="45" y="70" width="190" height="58"/><text class="label" x="140" y="105">Raspberry Pi</text></g>
+  <g><rect class="head" x="315" y="70" width="190" height="58"/><text class="label" x="410" y="105">command_service</text></g>
+  <g><rect class="head" x="585" y="70" width="210" height="58"/><text class="label" x="690" y="105">door_session_service</text></g>
+  <g><rect class="head" x="875" y="70" width="170" height="58"/><text class="label" x="960" y="105">Relay lock</text></g>
+  <g><rect class="head" x="1145" y="70" width="170" height="58"/><text class="label" x="1230" y="105">MC-38</text></g>
+
+  <line class="life" x1="140" y1="128" x2="140" y2="850"/><line class="life" x1="410" y1="128" x2="410" y2="850"/>
+  <line class="life" x1="690" y1="128" x2="690" y2="850"/><line class="life" x1="960" y1="128" x2="960" y2="850"/><line class="life" x1="1230" y1="128" x2="1230" y2="850"/>
+
+  <path class="msg" d="M140 185 H402"/><text class="text" x="270" y="175">UNLOCK</text>
+  <path class="msg" d="M410 235 H682"/><text class="text" x="545" y="225">request_unlock()</text>
+  <path class="msg" d="M690 285 H952"/><text class="text" x="820" y="275">lock_open()</text>
+  <path class="event" d="M690 335 H148"/><text class="text" x="420" y="325">LOCK: unlocked</text>
+  <rect class="phase" x="602" y="362" width="176" height="36"/><text class="phase-text" x="690" y="385">waiting_for_open</text>
+
+  <path class="event" d="M1230 455 H698"/><text class="text" x="965" y="445">Cửa mở, debounce 3 mẫu</text>
+  <path class="event" d="M690 505 H148"/><text class="text" x="420" y="495">DOOR: opened</text>
+  <path class="event" d="M690 555 H148"/><text class="text" x="420" y="545">SESSION: started</text>
+  <rect class="phase" x="622" y="582" width="136" height="36"/><text class="phase-text" x="690" y="605">active</text>
+
+  <rect class="note" x="804" y="652" width="312" height="42"/><text class="note-text" x="960" y="678">Sau tối đa 5 giây: relay tự khóa</text>
+  <path class="msg" d="M690 720 H952"/><text class="text" x="820" y="710">lock_close()</text>
+  <path class="event" d="M690 765 H148"/><text class="text" x="420" y="755">LOCK: locked</text>
+
+  <path class="event" d="M1230 810 H698"/><text class="text" x="965" y="800">Cửa đóng, debounce 3 mẫu</text>
+  <path class="event" d="M690 848 H148"/><text class="text" x="420" y="838">DOOR: closed · SESSION: ended · idle</text>
+</svg>
