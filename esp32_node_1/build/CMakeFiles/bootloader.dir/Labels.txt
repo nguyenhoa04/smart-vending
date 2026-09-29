@@ -1,13 +1,13 @@
 # Target labels
  bootloader
 # Source files and their labels
-D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/CMakeFiles/bootloader
-D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/CMakeFiles/bootloader.rule
-D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/CMakeFiles/bootloader-complete.rule
-D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
-D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
-D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
-D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
-D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
-D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
-D:/Framework/esp/Espressif/frameworks/esp-idf-v5.3.1/examples/get-started/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build/CMakeFiles/bootloader
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build/CMakeFiles/bootloader.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build/CMakeFiles/bootloader-complete.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule

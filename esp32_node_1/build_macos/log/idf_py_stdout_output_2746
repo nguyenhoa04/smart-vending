@@ -1,0 +1,8 @@
+Command: ninja all
+[1/4] cd /Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos && /Users/thanhhoa/.espressif/python_env/idf6.2_py3.13_env/bin/python /Users/thanhhoa/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/partition_table/partition-table.bin /Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/esp32_node.bin
+esp32_node.bin binary size 0x2d140 bytes. Smallest app partition is 0x100000 bytes. 0xd2ec0 bytes (82%) free.
+[2/4] Performing build step for 'bootloader'
+[1/1] cd /Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader && /Users/thanhhoa/.espressif/python_env/idf6.2_py3.13_env/bin/python /Users/thanhhoa/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 /Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader/bootloader.bin
+Bootloader binary size 0x65e0 bytes. 0xa20 bytes (9%) free.
+[3/4] No install step for 'bootloader'
+[4/4] Completed 'bootloader'

@@ -1,0 +1,155 @@
+Command: /Users/thanhhoa/.espressif/python_env/idf6.2_py3.13_env/bin/python /Users/thanhhoa/esp/esp-idf/tools/idf_monitor.py -p /dev/cu.usbserial-0001 -b 115200 --toolchain-prefix xtensa-esp32-elf- --target esp32 --revision 0 /Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/esp32_node.elf /Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader/bootloader.elf -m '/Users/thanhhoa/.espressif/python_env/idf6.2_py3.13_env/bin/python' '/Users/thanhhoa/esp/esp-idf/tools/idf.py' '-B' 'build_macos' '-p' '/dev/cu.usbserial-0001'
+ compile time Sep 29 2026 11:53:10
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (34) boot: chip revision: v3.1[0m
+[0;32mI (37) boot.esp32: SPI +͡�Size : 2MB[0m
+[0;32mI (48) boot: Enabling RNG early entropy source...[0m
+[0;32mI (52) boot: Partition Table:[0m
+[0;32mI (55) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (61) boot:  0 nvs              WiF�ets Jul 29 2019 12:21:46[0m
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0040,len:6364
+ho 0 tail 12 room 4
+load:0x40078000,len:15720
+ho 0 tail 12 room 4
+load:0x40080400,len:3904
+entry 0x4008061c
+[0;32mI (31) boot: ESP-IDF v6.1-dev-6126-ge9da155a726 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Sep 29 2026 11:53:10[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (34) boot: chip revision: v3.1[0m
+[0;32mI (37) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (41) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (44) boot.esp32: SPI Flash Size : 2MB[0m
+[0;32mI (48) boot: Enabling RNG early entropy source...[0m
+[0;32mI (52) boot: Partition Table:[0m
+[0;32mI (55) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (61) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (68) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (74) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (81) boot: End of partition table[0m
+[0;32mI (84) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=0b210h ( 45584) map[0m
+[0;32mI (109) esp_image: segment 1: paddr=0001b238 vaddr=3ffb0000 size=02c98h ( 11416) load[0m
+[0;32mI (113) esp_image: segment 2: paddr=0001ded8 vaddr=40080000 size=02140h (  8512) load[0m
+[0;32mI (117) esp_image: segment 3: paddr=00020020 vaddr=400d0020 size=138e0h ( 80096) map[0m
+[0;32mI (150) esp_image: segment 4: paddr=00033908 vaddr=40082140 size=097e4h ( 38884) load[0m
+[0;32mI (167) esp_image: segment 5: paddr=0003d0f4 vaddr=50000000 size=00028h (    40) load[0m
+[0;32mI (173) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (173) boot: Disabling RNG early entropy source...[0m
+[0;32mI (185) cpu_start: Multicore app[0m
+[0;32mI (193) cpu_start: GPIO 3 and 1 are used as console UART I/O pins[0m
+[0;32mI (193) cpu_start: Pro cpu start user code[0m
+[0;32mI (193) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (195) app_init: Application information:[0m
+[0;32mI (199) app_init: Project name:     esp32_node[0m
+[0;32mI (203) app_init: App version:      b8a04b2-dirty[0m
+[0;32mI (207) app_init: Compile time:     Sep 29 2026 11:53:13[0m
+[0;32mI (212) app_init: ELF file SHA256:  56a1900c2...[0m
+[0;32mI (217) app_init: ESP-IDF:          v6.1-dev-6126-ge9da155a726[0m
+[0;32mI (222) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (226) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (230) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (234) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (240) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (245) heap_init: At 3FFB3738 len 0002C8C8 (178 KiB): DRAM[0m
+[0;32mI (251) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (256) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (262) heap_init: At 4008B924 len 000146DC (81 KiB): IRAM[0m
+[0;33mW (268) spi_flash: Detected boya flash chip but using generic driver. For optimal functionality, enable `SPI_FLASH_SUPPORT_BOYA_CHIP` in menuconfig[0m
+[0;32mI (280) spi_flash: detected chip: generic[0m
+[0;32mI (283) spi_flash: flash io: dio[0m
+[0;33mW (286) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (300) main_task: Started on CPU0[0m
+[0;32mI (300) main_task: Calling app_main()[0m
+[0;32mI (300) MAIN_APP: System is starting...[0m
+[0;32mI (310) PI_UART: UART initialized successfully.[0m
+[0;32mI (310) HX711: HX711 interface ready: SCK=GPIO25, channels=1[0m
+[0;32mI (310) HX711: HX711 interface ready: SCK=GPIO26, channels=1[0m
+[0;32mI (320) MAIN_APP: Warming up 2 independent HX711 converter(s) for 2 seconds...[0m
+[0;32mI (3160) MAIN_APP: Auto-taring shelf 1 on startup...[0m
+[0;32mI (5080) MAIN_APP: SHELF_1 tare complete | samples=20 | offset_total=133966 | scale_total=32.000[0m
+[0;32mI (5080) MAIN_APP: Auto-taring shelf 2 on startup...[0m
+[0;32mI (5280) MAIN_APP: SHELF_2 tare complete | samples=20 | offset_total=0 | scale_total=1.000[0m
+[0;32mI (5280) DOOR_SESSION: MC-38 ready | GPIO=5 | raw=1 | door=open | lock=locked | session=idle[0m
+[0;32mI (5280) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: 133981 | OFFSET: 133966[0m
+[0;32mI (5290) MAIN_APP: SHELF_2 -> TOTAL: 0.0 | RAW: 0 | OFFSET: 0[0m
+[0;32mI (5290) main_task: Returned from app_main()[0m
+[0;32mI (20330) MAIN_APP: SHELF_1 -> TOTAL: 38.0 | RAW: 135196 | OFFSET: 133966[0m
+[0;32mI (20430) MAIN_APP: SHELF_1 -> TOTAL: 89.0 | RAW: 136803 | OFFSET: 133966[0m
+[0;32mI (20530) MAIN_APP: SHELF_1 -> TOTAL: 216.0 | RAW: 140885 | OFFSET: 133966[0m
+[0;32mI (20620) MAIN_APP: SHELF_1 -> TOTAL: 598.0 | RAW: 153113 | OFFSET: 133966[0m
+[0;32mI (20720) MAIN_APP: SHELF_1 -> TOTAL: 800.0 | RAW: 159555 | OFFSET: 133966[0m
+[0;32mI (20810) MAIN_APP: SHELF_1 -> TOTAL: 757.0 | RAW: 158200 | OFFSET: 133966[0m
+[0;32mI (20910) MAIN_APP: SHELF_1 -> TOTAL: 746.0 | RAW: 157845 | OFFSET: 133966[0m
+[0;32mI (28310) MAIN_APP: SHELF_1 -> TOTAL: 704.0 | RAW: 156488 | OFFSET: 133966[0m
+[0;32mI (28400) MAIN_APP: SHELF_1 -> TOTAL: 283.0 | RAW: 143029 | OFFSET: 133966[0m
+[0;32mI (28500) MAIN_APP: SHELF_1 -> TOTAL: 11.0 | RAW: 134313 | OFFSET: 133966[0m
+[0;32mI (28690) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: 133976 | OFFSET: 133966[0m
+[0;32mI (36090) MAIN_APP: SHELF_1 -> TOTAL: 106.0 | RAW: 137368 | OFFSET: 133966[0m
+[0;32mI (36180) MAIN_APP: SHELF_1 -> TOTAL: 282.0 | RAW: 142986 | OFFSET: 133966[0m
+[0;32mI (36280) MAIN_APP: SHELF_1 -> TOTAL: 589.0 | RAW: 152815 | OFFSET: 133966[0m
+[0;32mI (36370) MAIN_APP: SHELF_1 -> TOTAL: 758.0 | RAW: 158206 | OFFSET: 133966[0m
+[0;32mI (36470) MAIN_APP: SHELF_1 -> TOTAL: 746.0 | RAW: 157835 | OFFSET: 133966[0m
+[0;32mI (40600) MAIN_APP: SHELF_1 -> TOTAL: 520.0 | RAW: 150612 | OFFSET: 133966[0m
+[0;32mI (40700) MAIN_APP: SHELF_1 -> TOTAL: 83.0 | RAW: 136611 | OFFSET: 133966[0m
+[0;32mI (40790) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: 133941 | OFFSET: 133966[0m
+[0;32mI (43870) MAIN_APP: SHELF_1 -> TOTAL: 46.0 | RAW: 135427 | OFFSET: 133966[0m
+[0;32mI (43960) MAIN_APP: SHELF_1 -> TOTAL: 195.0 | RAW: 140201 | OFFSET: 133966[0m
+[0;32mI (44060) MAIN_APP: SHELF_1 -> TOTAL: 453.0 | RAW: 148460 | OFFSET: 133966[0m
+[0;32mI (44150) MAIN_APP: SHELF_1 -> TOTAL: 1105.0 | RAW: 169331 | OFFSET: 133966[0m
+[0;32mI (44250) MAIN_APP: SHELF_1 -> TOTAL: 1829.0 | RAW: 192482 | OFFSET: 133966[0m
+[0;32mI (44350) MAIN_APP: SHELF_1 -> TOTAL: 2197.0 | RAW: 204285 | OFFSET: 133966[0m
+[0;32mI (44440) MAIN_APP: SHELF_1 -> TOTAL: 2169.0 | RAW: 203362 | OFFSET: 133966[0m
+[0;32mI (44540) MAIN_APP: SHELF_1 -> TOTAL: 2073.0 | RAW: 200288 | OFFSET: 133966[0m
+[0;32mI (45690) MAIN_APP: SHELF_1 -> TOTAL: 2062.0 | RAW: 199965 | OFFSET: 133966[0m
+[0;32mI (64710) MAIN_APP: SHELF_1 -> TOTAL: 2079.0 | RAW: 200505 | OFFSET: 133966[0m
+[0;32mI (64800) MAIN_APP: SHELF_1 -> TOTAL: 1988.0 | RAW: 197583 | OFFSET: 133966[0m
+[0;32mI (64900) MAIN_APP: SHELF_1 -> TOTAL: 1067.0 | RAW: 168120 | OFFSET: 133966[0m
+[0;32mI (65000) MAIN_APP: SHELF_1 -> TOTAL: 112.0 | RAW: 137540 | OFFSET: 133966[0m
+[0;32mI (65090) MAIN_APP: SHELF_1 -> TOTAL: -5.0 | RAW: 133816 | OFFSET: 133966[0m
+[0;32mI (83530) MAIN_APP: SHELF_1 -> TOTAL: 43.0 | RAW: 135346 | OFFSET: 133966[0m
+[0;32mI (83630) MAIN_APP: SHELF_1 -> TOTAL: 158.0 | RAW: 139034 | OFFSET: 133966[0m
+[0;32mI (83730) MAIN_APP: SHELF_1 -> TOTAL: 330.0 | RAW: 144519 | OFFSET: 133966[0m
+[0;32mI (83820) MAIN_APP: SHELF_1 -> TOTAL: 638.0 | RAW: 154380 | OFFSET: 133966[0m
+[0;32mI (83920) MAIN_APP: SHELF_1 -> TOTAL: 911.0 | RAW: 163127 | OFFSET: 133966[0m
+[0;32mI (84010) MAIN_APP: SHELF_1 -> TOTAL: 877.0 | RAW: 162025 | OFFSET: 133966[0m
+[0;32mI (84110) MAIN_APP: SHELF_1 -> TOTAL: 758.0 | RAW: 158234 | OFFSET: 133966[0m
+[0;32mI (84210) MAIN_APP: SHELF_1 -> TOTAL: 745.0 | RAW: 157806 | OFFSET: 133966[0m
+[0;32mI (257570) MAIN_APP: SHELF_1 -> TOTAL: 680.0 | RAW: 155711 | OFFSET: 133966[0m
+[0;32mI (257670) MAIN_APP: SHELF_1 -> TOTAL: 390.0 | RAW: 146458 | OFFSET: 133966[0m
+[0;32mI (257760) MAIN_APP: SHELF_1 -> TOTAL: 52.0 | RAW: 135626 | OFFSET: 133966[0m
+[0;32mI (257860) MAIN_APP: SHELF_1 -> TOTAL: -4.0 | RAW: 133834 | OFFSET: 133966[0m
+[0;32mI (388010) MAIN_APP: SHELF_1 tare complete | samples=20 | offset_total=133811 | scale_total=32.000[0m
+[0;32mI (388090) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: 133831 | OFFSET: 133811[0m
+[0;32mI (461660) MAIN_APP: SHELF_1 -> TOTAL: 83.0 | RAW: 136461 | OFFSET: 133811[0m
+[0;32mI (461760) MAIN_APP: SHELF_1 -> TOTAL: 340.0 | RAW: 144698 | OFFSET: 133811[0m
+[0;32mI (461860) MAIN_APP: SHELF_1 -> TOTAL: 770.0 | RAW: 158439 | OFFSET: 133811[0m
+[0;32mI (461950) MAIN_APP: SHELF_1 -> TOTAL: 1255.0 | RAW: 173985 | OFFSET: 133811[0m
+[0;32mI (462050) MAIN_APP: SHELF_1 -> TOTAL: 1291.0 | RAW: 175131 | OFFSET: 133811[0m
+[0;32mI (462140) MAIN_APP: SHELF_1 -> TOTAL: 1200.0 | RAW: 172220 | OFFSET: 133811[0m
+[0;32mI (463870) MAIN_APP: SHELF_1 -> TOTAL: 1195.0 | RAW: 172032 | OFFSET: 133811[0m
+[0;32mI (559510) MAIN_APP: SHELF_1 calibrated | known=188.0g | raw_avg=172058 | scale=203.4415[0m
+[0;32mI (559590) MAIN_APP: SHELF_1 -> TOTAL: 188.0 | RAW: 172068 | OFFSET: 133811[0m
+[0;32mI (776410) MAIN_APP: SHELF_1 -> TOTAL: 106.0 | RAW: 155425 | OFFSET: 133811[0m
+[0;32mI (776500) MAIN_APP: SHELF_1 -> TOTAL: 12.0 | RAW: 136248 | OFFSET: 133811[0m
+[0;32mI (776600) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: 133632 | OFFSET: 133811[0m
+[0;32mI (778430) MAIN_APP: SHELF_1 -> TOTAL: 34.0 | RAW: 140649 | OFFSET: 133811[0m
+[0;32mI (778520) MAIN_APP: SHELF_1 -> TOTAL: 75.0 | RAW: 149157 | OFFSET: 133811[0m
+[0;32mI (778620) MAIN_APP: SHELF_1 -> TOTAL: 148.0 | RAW: 163850 | OFFSET: 133811[0m
+[0;32mI (778710) MAIN_APP: SHELF_1 -> TOTAL: 190.0 | RAW: 172423 | OFFSET: 133811[0m
+[0;32mI (1007980) MAIN_APP: SHELF_1 -> TOTAL: 103.0 | RAW: 154847 | OFFSET: 133811[0m
+[0;32mI (1008080) MAIN_APP: SHELF_1 -> TOTAL: 10.0 | RAW: 135867 | OFFSET: 133811[0m
+[0;32mI (1008170) MAIN_APP: SHELF_1 -> TOTAL: 0.0 | RAW: 133534 | OFFSET: 133811[0m
+[0;32mI (1012300) MAIN_APP: SHELF_1 -> TOTAL: 30.0 | RAW: 139910 | OFFSET: 133811[0m
+[0;32mI (1012400) MAIN_APP: SHELF_1 -> TOTAL: 59.0 | RAW: 145719 | OFFSET: 133811[0m
+[0;32mI (1012490) MAIN_APP: SHELF_1 -> TOTAL: 91.0 | RAW: 152367 | OFFSET: 133811[0m
+[0;32mI (1012590) MAIN_APP: SHELF_1 -> TOTAL: 118.0 | RAW: 157819 | OFFSET: 133811[0m
+[0;32mI (1020080) MAIN_APP: SHELF_1 -> TOTAL: 132.0 | RAW: 160593 | OFFSET: 133811[0m
+[0;32mI (1020170) MAIN_APP: SHELF_1 -> TOTAL: 68.0 | RAW: 147555 | OFFSET: 133811[0m
+[0;32mI (1020270) MAIN_APP: SHELF_1 -> TOTAL: 4.0 | RAW: 134658 | OFFSET: 133811[0m
+[0;32mI (1032170) MAIN_APP: SHELF_1 -> TOTAL: 57.0 | RAW: 145474 | OFFSET: 133811[0m
+[0;32mI (1032270) MAIN_APP: SHELF_1 -> TOTAL: 109.0 | RAW: 155969 | OFFSET: 133811[0m

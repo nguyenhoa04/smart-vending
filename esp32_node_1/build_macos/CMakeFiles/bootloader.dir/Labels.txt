@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/CMakeFiles/bootloader
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/CMakeFiles/bootloader.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/CMakeFiles/bootloader-complete.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule

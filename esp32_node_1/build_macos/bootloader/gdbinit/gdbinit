@@ -1,0 +1,2 @@
+source /Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader/gdbinit/symbols
+source /Users/thanhhoa/Documents/Backend/smart-vending-external/esp32_node_1/build_macos/bootloader/gdbinit/connect
