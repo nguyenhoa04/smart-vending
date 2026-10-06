@@ -23,6 +23,7 @@ static void process_tare_command(const char *command);
 static void process_calibrate_command(const char *command);
 static void console_task(void *context);
 static void uart_task(void *context);
+static void process_uart_bytes(const uint8_t *bytes, size_t length);
 
 void command_service_start(void) {
     xTaskCreate(uart_task, "LOCK", 4096, NULL, 5, NULL);
@@ -36,6 +37,8 @@ static void process_command(const char *command) {
     if (strcmp(normalized, "UNLOCK") == 0) {
         ESP_LOGI("LOCK", "UNLOCK command received");
         door_session_service_request_unlock();
+    } else if (strcmp(normalized, "WEIGHT_SNAPSHOT") == 0) {
+        shelf_service_send_all_snapshots();
     } else if (strcmp(normalized, "STATUS") == 0) {
         door_session_status_t door_status = {0};
         door_session_service_get_status(&door_status);
@@ -230,9 +233,31 @@ static void uart_task(void *context) {
             pdMS_TO_TICKS(20)
         );
         if (length > 0) {
-            receive_buffer[length] = '\0';
-            process_command((const char *)receive_buffer);
+            process_uart_bytes(receive_buffer, (size_t)length);
         }
         vTaskDelay(pdMS_TO_TICKS(20));
+    }
+}
+
+static void process_uart_bytes(const uint8_t *bytes, size_t length) {
+    // Driver reads may split one command or coalesce snapshot and heartbeat.
+    // Only complete bounded lines reach the command dispatcher.
+    static char line[COMMAND_BUFFER_SIZE];
+    static size_t position;
+    static bool overflow;
+    for (size_t i = 0; i < length; ++i) {
+        char character = (char)bytes[i];
+        if (character == '\n' || character == '\r') {
+            if (position > 0 && !overflow) {
+                line[position] = '\0';
+                process_command(line);
+            }
+            position = 0;
+            overflow = false;
+        } else if (!overflow && position < sizeof(line) - 1) {
+            line[position++] = character;
+        } else {
+            overflow = true;  // Discard the entire oversized command.
+        }
     }
 }

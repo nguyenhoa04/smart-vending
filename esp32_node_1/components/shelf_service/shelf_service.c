@@ -20,6 +20,7 @@
 #define HX711_READY_TIMEOUT_MS 200
 #define CORNER_SAMPLE_COUNT 15
 #define CORNER_COUNT 4
+#define SNAPSHOT_MAX_SAMPLE_AGE_MS 1000
 
 typedef struct {
     uint8_t id;
@@ -29,6 +30,7 @@ typedef struct {
     uint8_t sample_count;
     uint8_t sample_index;
     float total_weight;
+    TickType_t last_sample_at;
 } shelf_runtime_t;
 
 static const char *TAG = "MAIN_APP";
@@ -130,6 +132,36 @@ void shelf_service_start(void) {
 
 float shelf_service_get_primary_total(void) {
     return shelves[0].total_weight;
+}
+
+void shelf_service_send_all_snapshots(void) {
+    shelf_runtime_t snapshots[SHELF_COUNT];
+    bool valid[SHELF_COUNT] = {false};
+    // A missing mutex or busy calibration/sensor task cannot supply safe
+    // readings. Pi retries within its own bounded readiness phase.
+    if (shelf_mutex == NULL ||
+        xSemaphoreTake(shelf_mutex, pdMS_TO_TICKS(50)) != pdTRUE) {
+        ESP_LOGW(TAG, "WEIGHT_SNAPSHOT skipped: shelf measurements busy");
+        return;
+    }
+    TickType_t now = xTaskGetTickCount();
+    for (uint8_t i = 0; i < SHELF_COUNT; ++i) {
+        valid[i] = shelves[i].sample_count > 0 && isfinite(shelves[i].total_weight) &&
+            (TickType_t)(now - shelves[i].last_sample_at) <= pdMS_TO_TICKS(SNAPSHOT_MAX_SAMPLE_AGE_MS);
+        if (valid[i]) {
+            snapshots[i] = shelves[i];
+        }
+    }
+    xSemaphoreGive(shelf_mutex);
+    // UART publication happens outside the sensor mutex. Only copies are
+    // read; filters, HX711 calibration, and change-publication state stay intact.
+    for (uint8_t i = 0; i < SHELF_COUNT; ++i) {
+        if (valid[i]) {
+            send_shelf_uart_snapshot(&snapshots[i]);
+        } else {
+            ESP_LOGW(TAG, "WEIGHT_SNAPSHOT skipped: SHELF_%u has no recent measurement", shelves[i].id);
+        }
+    }
 }
 
 void shelf_service_tare_primary(void) {
@@ -276,6 +308,7 @@ static void reset_shelf_filter(shelf_runtime_t *shelf) {
     shelf->sample_count = 0;
     shelf->sample_index = 0;
     shelf->total_weight = 0.0f;
+    shelf->last_sample_at = 0;
     memset(shelf->samples, 0, sizeof(shelf->samples));
 }
 
@@ -325,6 +358,7 @@ static bool tare_shelf(shelf_runtime_t *shelf) {
 
 static void update_shelf_weight_from_raw(shelf_runtime_t *shelf, int32_t raw_total) {
     shelf->raw_value = raw_total;
+    shelf->last_sample_at = xTaskGetTickCount();
     float calibrated_total = hx711_calibrate_raw(&shelf->hx711, raw_total);
 
     if (shelf->sample_count == MOVING_AVERAGE_WINDOW &&
