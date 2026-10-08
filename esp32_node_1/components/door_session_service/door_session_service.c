@@ -32,6 +32,13 @@ static void door_session_task(void *context);
 static bool update_debounced_door_state(bool raw_door_closed);
 static void process_door_state(void);
 static void close_lock_if_needed(void);
+static void transition_session(door_session_state_t next, const char *reason) {
+    if (session_state == next) return;
+    ESP_LOGI(TAG, "SESSION_TRANSITION old=%s new=%s reason=%s",
+             door_session_service_state_name(session_state),
+             door_session_service_state_name(next), reason);
+    session_state = next;
+}
 
 void door_session_service_init(void) {
     state_mutex = xSemaphoreCreateMutex();
@@ -72,13 +79,28 @@ void door_session_service_start(void) {
 void door_session_service_request_unlock(void) {
     if (state_mutex == NULL ||
         xSemaphoreTake(state_mutex, portMAX_DELAY) == pdTRUE) {
+        ESP_LOGI(TAG, "UNLOCK_REQUEST door=%s session=%s lock=%s relay=%s",
+                 stable_door_closed ? "closed" : "open",
+                 door_session_service_state_name(session_state),
+                 lock_unlocked ? "unlocked" : "locked", lock_unlocked ? "on" : "off");
+        if (!stable_door_closed || session_state != DOOR_SESSION_IDLE) {
+            const char *reason = !stable_door_closed ? "door_already_open" : "session_not_idle";
+            ESP_LOGW(TAG, "UNLOCK_REJECTED reason=%s door=%s session=%s lock=%s",
+                     reason, stable_door_closed ? "closed" : "open",
+                     door_session_service_state_name(session_state),
+                     lock_unlocked ? "unlocked" : "locked");
+            send_to_pi(!stable_door_closed ? "ERROR: DOOR_OPEN_BEFORE_UNLOCK\n" :
+                                           "ERROR: UNLOCK_SESSION_NOT_IDLE\n");
+            if (state_mutex != NULL) xSemaphoreGive(state_mutex);
+            return;
+        }
+        // A boundary from an earlier session cannot authorize this session's final sample.
+        close_boundary_valid = false;
         lock_open();
         lock_unlocked = true;
         unlock_started_at = xTaskGetTickCount();
 
-        if (session_state != DOOR_SESSION_ACTIVE) {
-            session_state = DOOR_SESSION_WAITING_FOR_OPEN;
-        }
+        transition_session(DOOR_SESSION_WAITING_FOR_OPEN, "unlock_accepted");
 
         send_to_pi("LOCK: unlocked\n");
 
@@ -159,10 +181,22 @@ static void close_lock_if_needed(void) {
 }
 
 static void process_door_state(void) {
-    bool door_changed = update_debounced_door_state(is_door_closed());
+    bool previous_door_closed = stable_door_closed;
+    bool raw_door_closed = is_door_closed();
+    bool door_changed = update_debounced_door_state(raw_door_closed);
     if (door_changed) {
-        close_boundary_valid = stable_door_closed && session_state == DOOR_SESSION_ACTIVE;
-        if (close_boundary_valid) close_boundary_at = xTaskGetTickCount();
+        // Only a debounced OPEN -> CLOSED in ACTIVE establishes commerce evidence.
+        // Any reopen invalidates final-snapshot eligibility, including after checkout.
+        close_boundary_valid = !previous_door_closed && stable_door_closed &&
+                               session_state == DOOR_SESSION_ACTIVE;
+        if (close_boundary_valid) {
+            close_boundary_at = xTaskGetTickCount();
+        }
+        ESP_LOGI(TAG, "DOOR_TRANSITION GPIO=%d raw=%d previous_state=%s debounced_state=%s session=%s",
+                 DOOR_SENSOR_PIN, raw_door_closed ? 0 : 1,
+                 previous_door_closed ? "closed" : "open",
+                 stable_door_closed ? "closed" : "open",
+                 door_session_service_state_name(session_state));
         ESP_LOGI(
             TAG,
             "MC-38 changed | GPIO=%d | raw=%d | door=%s",
@@ -170,38 +204,34 @@ static void process_door_state(void) {
             stable_door_closed ? 0 : 1,
             stable_door_closed ? "closed" : "open"
         );
+        if (close_boundary_valid) {
+            ESP_LOGI(TAG, "PHYSICAL_CLOSE_BOUNDARY tick=%lu time_ms=%lu door=closed session=active",
+                     (unsigned long)close_boundary_at,
+                     (unsigned long)(close_boundary_at * portTICK_PERIOD_MS));
+        }
         send_to_pi(stable_door_closed ? "DOOR: closed\n" : "DOOR: opened\n");
     }
 
-    TickType_t unlock_elapsed = xTaskGetTickCount() - unlock_started_at;
-    bool unlock_timed_out =
-        lock_unlocked && unlock_elapsed >= pdMS_TO_TICKS(UNLOCK_TIMEOUT_MS);
-
     switch (session_state) {
         case DOOR_SESSION_WAITING_FOR_OPEN:
-            if (!stable_door_closed) {
-                session_state = DOOR_SESSION_ACTIVE;
+            if (door_changed && previous_door_closed && !stable_door_closed) {
+                transition_session(DOOR_SESSION_ACTIVE, "physical_open");
                 send_to_pi("SESSION: started\n");
                 ESP_LOGI(TAG, "Purchase session started");
-            }
-
-            if (unlock_timed_out) {
+            } else if (lock_unlocked &&
+                       xTaskGetTickCount() - unlock_started_at >= pdMS_TO_TICKS(UNLOCK_TIMEOUT_MS)) {
+                ESP_LOGW(TAG, "UNLOCK_TIMEOUT elapsed_ticks=%lu door=%s session=waiting_for_open",
+                         (unsigned long)(xTaskGetTickCount() - unlock_started_at),
+                         stable_door_closed ? "closed" : "open");
                 close_lock_if_needed();
-                if (session_state == DOOR_SESSION_WAITING_FOR_OPEN) {
-                    session_state = DOOR_SESSION_IDLE;
-                    ESP_LOGI(TAG, "Unlock timed out before door opened");
-                }
+                transition_session(DOOR_SESSION_IDLE, "no_open_timeout");
             }
             break;
 
         case DOOR_SESSION_ACTIVE:
-            if (unlock_timed_out) {
+            if (door_changed && !previous_door_closed && stable_door_closed) {
                 close_lock_if_needed();
-            }
-
-            if (stable_door_closed) {
-                close_lock_if_needed();
-                session_state = DOOR_SESSION_IDLE;
+                transition_session(DOOR_SESSION_IDLE, "physical_close");
                 send_to_pi("SESSION: ended\n");
                 ESP_LOGI(TAG, "Purchase session ended");
             }
