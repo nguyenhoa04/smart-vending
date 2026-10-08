@@ -10,7 +10,9 @@
 static TickType_t host_now = 5000;
 static bool lock_available = true;
 static bool lock_held;
-static unsigned raw_reads, delays, unlocks, gives;
+static bool physical_closed;
+static uint32_t closed_tick;
+static unsigned raw_reads, delays, unlocks, gives, nvs_calls;
 static char output[4096];
 
 SemaphoreHandle_t xSemaphoreCreateMutex(void) { return (void *)1; }
@@ -33,6 +35,14 @@ int xTaskCreate(void (*task)(void *), const char *name, unsigned stack,
     return pdTRUE;
 }
 void host_log(const char *tag, const char *format, ...) { (void)tag; (void)format; }
+const char *esp_err_to_name(esp_err_t error) { (void)error; return "host error"; }
+esp_err_t calibration_store_init(void) { ++nvs_calls; return ESP_OK; }
+esp_err_t calibration_store_load(uint8_t id, calibration_store_data_t *data) {
+    (void)id; (void)data; ++nvs_calls; return ESP_ERR_NOT_FOUND;
+}
+esp_err_t calibration_store_save(uint8_t id, const calibration_store_data_t *data) {
+    (void)id; (void)data; ++nvs_calls; return ESP_OK;
+}
 void send_to_pi(const char *data) {
     assert(!lock_held);  /* Snapshot TX must not hold the sensor mutex. */
     assert(strlen(output) + strlen(data) < sizeof(output));
@@ -50,6 +60,10 @@ bool hx711_read_raw_timeout(const hx711_config_t *config, int32_t *value, uint32
 float hx711_calibrate_raw(const hx711_config_t *config, int32_t value) {
     return (value - config->offset) / config->scale;
 }
+bool door_session_service_get_close_boundary(uint32_t *tick) {
+    if (!physical_closed) return false;
+    *tick = closed_tick; return true;
+}
 void door_session_service_request_unlock(void) { ++unlocks; }
 void door_session_service_get_status(door_session_status_t *status) {
     *status = (door_session_status_t){.door_closed = true, .session_state = DOOR_SESSION_IDLE};
@@ -61,6 +75,11 @@ static void clear_output(void) { memset(output, 0, sizeof(output)); }
 int main(void) {
     shelf_mutex = xSemaphoreCreateMutex();
     for (uint8_t i = 0; i < SHELF_COUNT; ++i) {
+        shelves[i].calibration = (calibration_store_data_t){
+            .offset = 1000, .scale = 200.0f, .offset_valid = true, .scale_valid = true,
+        };
+        shelves[i].hx711.offset = 1000;
+        shelves[i].hx711.scale = 200.0f;
         shelves[i].sample_count = MOVING_AVERAGE_WINDOW;
         shelves[i].sample_index = 7;
         shelves[i].raw_value = 12345 + i;
@@ -120,6 +139,25 @@ int main(void) {
     puts("PASS oversized UART line is discarded and next command recovers");
 
     clear_output();
+    process_command("FINAL_WEIGHT_SNAPSHOT");
+    assert(output[0] == '\0');  /* Boot/relay state never supplies a boundary. */
+    physical_closed = true; closed_tick = host_now - 50;
+    process_command("FINAL_WEIGHT_SNAPSHOT");
+    assert(output[0] == '\0');  /* Existing pre-close ADC sample rejected. */
+    shelves[0].last_sample_at = shelves[1].last_sample_at = host_now;
+    shelves[0].measurement_sequence = 42; shelves[1].measurement_sequence = 77;
+    memcpy(before, shelves, sizeof(shelves));
+    process_command("FINAL_WEIGHT_SNAPSHOT");
+    assert(strcmp(output, "SHELF_1: TOTAL=1050.0; FINAL=1; SAMPLE_SEQ=42; AFTER_CLOSE=1\n"
+                          "SHELF_2: TOTAL=239.0; FINAL=1; SAMPLE_SEQ=77; AFTER_CLOSE=1\n") == 0);
+    assert(memcmp(before, shelves, sizeof(shelves)) == 0);
+    clear_output(); process_command("FINAL_WEIGHT_SNAPSHOT");
+    assert(strstr(output, "SAMPLE_SEQ=42"));  /* Repeated snapshots keep ADC identity. */
+    clear_output(); host_now += 1001;
+    process_command("FINAL_WEIGHT_SNAPSHOT"); assert(output[0] == '\0');
+    puts("PASS final snapshots require post-close fresh ADC sample and preserve sample identity/state");
+
+    clear_output();
     host_now = 5;
     shelves[0].last_sample_at = shelves[1].last_sample_at = UINT32_MAX - 20;
     process_command("WEIGHT_SNAPSHOT");
@@ -127,7 +165,7 @@ int main(void) {
     clear_output();
     process_command("STATUS");
     assert(strcmp(output, "STATUS: door=closed;lock=locked;session=idle;weight=1050.0\n") == 0);
-    assert(raw_reads == 0 && delays == 0 && unlocks == 0);
+    assert(raw_reads == 0 && delays == 0 && unlocks == 0 && nvs_calls == 0);
     puts("PASS freshness handles tick rollover; STATUS keeps primary-shelf semantics");
     return 0;
 }

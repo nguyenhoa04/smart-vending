@@ -25,6 +25,8 @@ static bool lock_unlocked;
 static bool stable_door_closed;
 static bool candidate_door_closed;
 static uint8_t candidate_sample_count;
+static bool close_boundary_valid;
+static TickType_t close_boundary_at;
 
 static void door_session_task(void *context);
 static bool update_debounced_door_state(bool raw_door_closed);
@@ -45,6 +47,7 @@ void door_session_service_init(void) {
     candidate_sample_count = 0;
     lock_unlocked = false;
     session_state = DOOR_SESSION_IDLE;
+    close_boundary_valid = false;
 
     ESP_LOGI(
         TAG,
@@ -114,6 +117,17 @@ const char *door_session_service_state_name(door_session_state_t state) {
     }
 }
 
+bool door_session_service_get_close_boundary(uint32_t *boundary_tick) {
+    if (boundary_tick == NULL || state_mutex == NULL ||
+        xSemaphoreTake(state_mutex, pdMS_TO_TICKS(50)) != pdTRUE) {
+        return false;
+    }
+    bool valid = close_boundary_valid && stable_door_closed && !lock_unlocked;
+    if (valid) *boundary_tick = close_boundary_at;
+    xSemaphoreGive(state_mutex);
+    return valid;
+}
+
 static bool update_debounced_door_state(bool raw_door_closed) {
     if (raw_door_closed != candidate_door_closed) {
         candidate_door_closed = raw_door_closed;
@@ -147,6 +161,8 @@ static void close_lock_if_needed(void) {
 static void process_door_state(void) {
     bool door_changed = update_debounced_door_state(is_door_closed());
     if (door_changed) {
+        close_boundary_valid = stable_door_closed && session_state == DOOR_SESSION_ACTIVE;
+        if (close_boundary_valid) close_boundary_at = xTaskGetTickCount();
         ESP_LOGI(
             TAG,
             "MC-38 changed | GPIO=%d | raw=%d | door=%s",

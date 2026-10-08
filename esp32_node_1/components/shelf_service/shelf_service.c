@@ -13,6 +13,8 @@
 
 #include "hx711.h"
 #include "pi_uart.h"
+#include "calibration_store.h"
+#include "door_session_service.h"
 
 #define SHELF_COUNT 2
 #define MOVING_AVERAGE_WINDOW 20
@@ -31,6 +33,8 @@ typedef struct {
     uint8_t sample_index;
     float total_weight;
     TickType_t last_sample_at;
+    uint32_t measurement_sequence;
+    calibration_store_data_t calibration;
 } shelf_runtime_t;
 
 static const char *TAG = "MAIN_APP";
@@ -42,8 +46,8 @@ static shelf_runtime_t shelves[SHELF_COUNT] = {
             .id = 1,
             .dout_pin = GPIO_NUM_34,
             .sck_pin = GPIO_NUM_25,
-            .offset = -186477,
-            .scale = 32.0000f,
+            .offset = 0,
+            .scale = 0.0f,  // Invalid until persisted calibration is loaded.
         },
     },
     {
@@ -53,7 +57,7 @@ static shelf_runtime_t shelves[SHELF_COUNT] = {
             .dout_pin = GPIO_NUM_35,
             .sck_pin = GPIO_NUM_26,
             .offset = 0,
-            .scale = 1.0f,
+            .scale = 0.0f,
         },
     },
 };
@@ -65,6 +69,8 @@ static bool corner_has_reading[CORNER_COUNT] = {false, false, false, false};
 static void sensor_task(void *context);
 static shelf_runtime_t *find_active_shelf(uint8_t shelf_id);
 static void reset_shelf_filter(shelf_runtime_t *shelf);
+static bool shelf_calibration_valid(const shelf_runtime_t *shelf);
+static void load_shelf_calibration(shelf_runtime_t *shelf);
 static bool read_selected_shelf_raw(shelf_runtime_t *shelf, int32_t *raw_value);
 static bool tare_shelf(shelf_runtime_t *shelf);
 static void update_shelf_weight_from_raw(shelf_runtime_t *shelf, int32_t raw_total);
@@ -87,9 +93,15 @@ void shelf_service_init(void) {
     if (shelf_mutex == NULL) {
         ESP_LOGE(TAG, "Failed to create shelf mutex.");
     }
+    // This is the single startup owner. node_app initializes UART first and
+    // starts sensor/command tasks only after this function returns.
+    (void)calibration_store_init();
 
     for (uint8_t i = 0; i < SHELF_COUNT; ++i) {
         reset_shelf_filter(&shelves[i]);
+        load_shelf_calibration(&shelves[i]);
+    }
+    for (uint8_t i = 0; i < SHELF_COUNT; ++i) {
         if (!hx711_init(&shelves[i].hx711)) {
             ESP_LOGE(
                 TAG,
@@ -120,10 +132,7 @@ void shelf_service_init(void) {
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 
-    for (uint8_t i = 0; i < SHELF_COUNT; ++i) {
-        ESP_LOGI(TAG, "Auto-taring shelf %u on startup...", shelves[i].id);
-        (void)tare_shelf(&shelves[i]);
-    }
+    ESP_LOGI(TAG, "Startup auto-tare disabled, using persisted calibration only");
 }
 
 void shelf_service_start(void) {
@@ -131,7 +140,17 @@ void shelf_service_start(void) {
 }
 
 float shelf_service_get_primary_total(void) {
-    return shelves[0].total_weight;
+    if (shelf_mutex == NULL ||
+        xSemaphoreTake(shelf_mutex, pdMS_TO_TICKS(50)) != pdTRUE) {
+        return NAN;
+    }
+    const shelf_runtime_t *shelf = &shelves[0];
+    bool valid = shelf_calibration_valid(shelf) && shelf->sample_count > 0 &&
+        (TickType_t)(xTaskGetTickCount() - shelf->last_sample_at) <=
+        pdMS_TO_TICKS(SNAPSHOT_MAX_SAMPLE_AGE_MS);
+    float total = valid ? shelf->total_weight : NAN;
+    xSemaphoreGive(shelf_mutex);
+    return total;
 }
 
 void shelf_service_send_all_snapshots(void) {
@@ -146,7 +165,8 @@ void shelf_service_send_all_snapshots(void) {
     }
     TickType_t now = xTaskGetTickCount();
     for (uint8_t i = 0; i < SHELF_COUNT; ++i) {
-        valid[i] = shelves[i].sample_count > 0 && isfinite(shelves[i].total_weight) &&
+        valid[i] = shelf_calibration_valid(&shelves[i]) &&
+            shelves[i].sample_count > 0 && isfinite(shelves[i].total_weight) &&
             (TickType_t)(now - shelves[i].last_sample_at) <= pdMS_TO_TICKS(SNAPSHOT_MAX_SAMPLE_AGE_MS);
         if (valid[i]) {
             snapshots[i] = shelves[i];
@@ -166,6 +186,35 @@ void shelf_service_send_all_snapshots(void) {
 
 void shelf_service_tare_primary(void) {
     (void)shelf_service_tare(1);
+}
+
+void shelf_service_send_final_snapshots(void) {
+    uint32_t boundary = 0;
+    if (!door_session_service_get_close_boundary(&boundary)) {
+        ESP_LOGW(TAG, "FINAL_WEIGHT_SNAPSHOT skipped: no confirmed physical close boundary");
+        return;
+    }
+    shelf_runtime_t snapshots[SHELF_COUNT];
+    bool valid[SHELF_COUNT] = {false};
+    if (shelf_mutex == NULL || xSemaphoreTake(shelf_mutex, pdMS_TO_TICKS(50)) != pdTRUE) {
+        ESP_LOGW(TAG, "FINAL_WEIGHT_SNAPSHOT skipped: shelf measurements busy");
+        return;
+    }
+    TickType_t now = xTaskGetTickCount();
+    for (uint8_t i = 0; i < SHELF_COUNT; ++i) {
+        valid[i] = shelf_calibration_valid(&shelves[i]) && shelves[i].sample_count > 0 &&
+            isfinite(shelves[i].total_weight) && (int32_t)(shelves[i].last_sample_at - boundary) > 0 &&
+            (TickType_t)(now - shelves[i].last_sample_at) <= pdMS_TO_TICKS(SNAPSHOT_MAX_SAMPLE_AGE_MS);
+        if (valid[i]) snapshots[i] = shelves[i];
+    }
+    xSemaphoreGive(shelf_mutex);
+    for (uint8_t i = 0; i < SHELF_COUNT; ++i) {
+        if (!valid[i]) continue;
+        char payload[128];
+        snprintf(payload, sizeof(payload), "SHELF_%u: TOTAL=%.1f; FINAL=1; SAMPLE_SEQ=%lu; AFTER_CLOSE=1\n",
+                 snapshots[i].id, snapshots[i].total_weight, (unsigned long)snapshots[i].measurement_sequence);
+        send_to_pi(payload);
+    }
 }
 
 void shelf_service_calibrate_primary(float known_weight_g) {
@@ -295,6 +344,27 @@ static shelf_runtime_t *find_active_shelf(uint8_t shelf_id) {
     return &shelves[shelf_id - 1];
 }
 
+static bool shelf_calibration_valid(const shelf_runtime_t *shelf) {
+    return shelf != NULL && shelf->calibration.offset_valid && shelf->calibration.scale_valid &&
+        isfinite(shelf->hx711.scale) && fabsf(shelf->hx711.scale) >= CALIBRATION_MIN_ABS_SCALE;
+}
+
+static void load_shelf_calibration(shelf_runtime_t *shelf) {
+    calibration_store_data_t data = {0};
+    esp_err_t status = calibration_store_load(shelf->id, &data);
+    shelf->calibration = status == ESP_OK ? data : (calibration_store_data_t){0};
+    shelf->hx711.offset = shelf->calibration.offset_valid ? shelf->calibration.offset : 0;
+    shelf->hx711.scale = shelf->calibration.scale_valid ? shelf->calibration.scale : 0.0f;
+    if (status == ESP_OK && shelf_calibration_valid(shelf)) {
+        ESP_LOGI(TAG, "SHELF_%u calibration loaded | offset=%ld | scale=%.4f | valid=yes",
+                 shelf->id, (long)shelf->hx711.offset, shelf->hx711.scale);
+    } else {
+        ESP_LOGW(TAG, "SHELF_%u calibration required | offset_valid=%s | scale_valid=%s | load=%s; no startup tare",
+                 shelf->id, shelf->calibration.offset_valid ? "yes" : "no",
+                 shelf->calibration.scale_valid ? "yes" : "no", esp_err_to_name(status));
+    }
+}
+
 static bool read_selected_shelf_raw(shelf_runtime_t *shelf, int32_t *raw_value) {
     if (shelf == NULL || raw_value == NULL ||
         shelf->id == 0 || shelf->id > SHELF_COUNT) {
@@ -342,7 +412,17 @@ static bool tare_shelf(shelf_runtime_t *shelf) {
         return false;
     }
 
-    shelf->hx711.offset = (int32_t)(raw_sum / valid_samples);
+    calibration_store_data_t updated = shelf->calibration;
+    updated.offset = (int32_t)(raw_sum / valid_samples);
+    updated.offset_valid = true;
+    esp_err_t saved = calibration_store_save(shelf->id, &updated);
+    if (saved != ESP_OK) {
+        ESP_LOGE(TAG, "SHELF_%u tare not applied: calibration save failed: %s",
+                 shelf->id, esp_err_to_name(saved));
+        return false;
+    }
+    shelf->calibration = updated;
+    shelf->hx711.offset = updated.offset;
     reset_shelf_filter(shelf);
 
     ESP_LOGI(
@@ -358,7 +438,11 @@ static bool tare_shelf(shelf_runtime_t *shelf) {
 
 static void update_shelf_weight_from_raw(shelf_runtime_t *shelf, int32_t raw_total) {
     shelf->raw_value = raw_total;
+    if (!shelf_calibration_valid(shelf)) {
+        return;  // Keep raw reads available for explicit TARE/CALIBRATE only.
+    }
     shelf->last_sample_at = xTaskGetTickCount();
+    ++shelf->measurement_sequence;
     float calibrated_total = hx711_calibrate_raw(&shelf->hx711, raw_total);
 
     if (shelf->sample_count == MOVING_AVERAGE_WINDOW &&
@@ -424,6 +508,9 @@ static bool sample_shelf_average(
     uint8_t n_samples,
     float *out_grams
 ) {
+    if (!shelf_calibration_valid(shelf)) {
+        return false;
+    }
     int64_t raw_sum = 0;
     uint8_t valid_samples = 0;
 
@@ -455,7 +542,11 @@ static bool calibrate_shelf_known_weight(
         return false;
     }
 
-    if (known_weight_g <= 0.0f) {
+    if (!shelf->calibration.offset_valid) {
+        ESP_LOGW(TAG, "SHELF_%u calibration requires a valid offset; explicitly tare an empty shelf first", shelf->id);
+        return false;
+    }
+    if (!isfinite(known_weight_g) || known_weight_g <= 0.0f) {
         ESP_LOGW(
             TAG,
             "SHELF_%d calibration has invalid known weight %.2f",
@@ -490,7 +581,7 @@ static bool calibrate_shelf_known_weight(
     float new_scale =
         (float)(raw_avg - shelf->hx711.offset) / known_weight_g;
 
-    if (fabsf(new_scale) < 0.0001f) {
+    if (!isfinite(new_scale) || fabsf(new_scale) < CALIBRATION_MIN_ABS_SCALE) {
         ESP_LOGW(
             TAG,
             "SHELF_%d calibration scale too small; check wiring and offset",
@@ -499,7 +590,17 @@ static bool calibrate_shelf_known_weight(
         return false;
     }
 
-    shelf->hx711.scale = new_scale;
+    calibration_store_data_t updated = shelf->calibration;
+    updated.scale = new_scale;
+    updated.scale_valid = true;
+    esp_err_t saved = calibration_store_save(shelf->id, &updated);
+    if (saved != ESP_OK) {
+        ESP_LOGE(TAG, "SHELF_%u calibration not applied: NVS save failed: %s",
+                 shelf->id, esp_err_to_name(saved));
+        return false;
+    }
+    shelf->calibration = updated;
+    shelf->hx711.scale = updated.scale;
     reset_shelf_filter(shelf);
 
     if (result != NULL) {
@@ -563,7 +664,8 @@ static void sensor_task(void *context) {
                 int32_t raw_value = 0;
                 if (read_selected_shelf_raw(&shelves[i], &raw_value)) {
                     update_shelf_weight_from_raw(&shelves[i], raw_value);
-                    if (fabsf(shelves[i].total_weight - last_printed[i]) > 0.1f) {
+                    if (shelf_calibration_valid(&shelves[i]) && shelves[i].sample_count > 0 &&
+                        fabsf(shelves[i].total_weight - last_printed[i]) > 0.1f) {
                         send_shelf_uart_snapshot(&shelves[i]);
                         last_printed[i] = shelves[i].total_weight;
                     }

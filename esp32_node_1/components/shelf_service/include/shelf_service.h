@@ -18,6 +18,7 @@ void shelf_service_start(void);
 float shelf_service_get_primary_total(void);
 /* Read-only: publish recent filtered measurements for every physical shelf. */
 void shelf_service_send_all_snapshots(void);
+void shelf_service_send_final_snapshots(void);
 bool shelf_service_tare(uint8_t shelf_id);
 bool shelf_service_calibrate(
     uint8_t shelf_id,

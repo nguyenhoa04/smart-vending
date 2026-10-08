@@ -10,12 +10,12 @@ import tempfile
 def main():
     root = Path(__file__).resolve().parents[1]
     with tempfile.TemporaryDirectory(prefix="weight-snapshot-test-") as directory:
-        binary = str(Path(directory) / "weight_snapshot_test")
+        binary = str(Path(directory) / "door_close_test")
         command = shlex.split(os.environ.get("CC", "cc")) + ["-std=gnu11", "-Wall", "-Wextra", "-Werror"]
         command += ["-I" + str(root / "tests/host_stubs")]
-        for component in ("shelf_service", "command_service", "hx711", "pi_uart", "door_session_service", "calibration_store"):
+        for component in ("lock", "pi_uart", "door_session_service"):
             command += ["-I" + str(root / "components" / component / "include")]
-        command += [str(root / "tests/weight_snapshot_test.c"), "-lm", "-o", binary]
+        command += [str(root / "tests/door_close_test.c"), "-lm", "-o", binary]
         subprocess.run(command, check=True)
         subprocess.run([binary], check=True)
 

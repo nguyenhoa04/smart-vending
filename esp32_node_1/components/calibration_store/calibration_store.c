@@ -58,17 +58,9 @@ esp_err_t calibration_store_init(void) {
     }
 
     esp_err_t result = nvs_flash_init();
-    if (result == ESP_ERR_NVS_NO_FREE_PAGES ||
-        result == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-        ESP_LOGW(TAG, "NVS requires reinitialization; erasing NVS partition");
-        result = nvs_flash_erase();
-        if (result == ESP_OK) {
-            result = nvs_flash_init();
-        }
-    }
-
     if (result != ESP_OK) {
-        ESP_LOGE(TAG, "NVS initialization failed: %s", esp_err_to_name(result));
+        ESP_LOGE(TAG, "NVS initialization failed: %s; preserving NVS, calibration requires maintenance",
+                 esp_err_to_name(result));
         return result;
     }
 

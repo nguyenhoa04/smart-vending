@@ -1,6 +1,7 @@
 #include "command_service.h"
 
 #include <stdbool.h>
+#include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,6 +40,8 @@ static void process_command(const char *command) {
         door_session_service_request_unlock();
     } else if (strcmp(normalized, "WEIGHT_SNAPSHOT") == 0) {
         shelf_service_send_all_snapshots();
+    } else if (strcmp(normalized, "FINAL_WEIGHT_SNAPSHOT") == 0) {
+        shelf_service_send_final_snapshots();
     } else if (strcmp(normalized, "STATUS") == 0) {
         door_session_status_t door_status = {0};
         door_session_service_get_status(&door_status);
@@ -131,7 +134,7 @@ static void process_tare_command(const char *command) {
         snprintf(
             response,
             sizeof(response),
-            "TARE: SHELF_%u ERROR inactive or no samples\n",
+            "TARE: SHELF_%u ERROR samples or NVS failure\n",
             shelf_id
         );
     }
@@ -170,7 +173,7 @@ static void process_calibrate_command(const char *command) {
 
     char *end = NULL;
     float known_weight = strtof(weight_text, &end);
-    if (end == weight_text || *end != '\0' || known_weight <= 0.0f) {
+    if (end == weight_text || *end != '\0' || !isfinite(known_weight) || known_weight <= 0.0f) {
         send_to_pi("CALIBRATE: ERROR invalid weight\n");
         return;
     }
@@ -191,7 +194,7 @@ static void process_calibrate_command(const char *command) {
         snprintf(
             response,
             sizeof(response),
-            "CALIBRATE: SHELF_%u ERROR inactive, no samples or scale too small\n",
+            "CALIBRATE: SHELF_%u ERROR offset, samples, scale or NVS failure\n",
             shelf_id
         );
     }
